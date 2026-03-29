@@ -39,17 +39,21 @@ export default function ProductCard({ product, className }: ProductCardProps) {
     <Link href={`/products/${product.id}`} className={cn('group card block overflow-hidden', className)}>
       {/* Image */}
       <div className="relative aspect-[4/3] bg-surface-container-low overflow-hidden">
-        <FallbackImage
-          src={product.mainImageUrl}
-          alt={product.name}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="material-symbols-outlined text-5xl text-outline-variant">medication</span>
-          </div>
-        )}
+        {product.mainImageUrl ? (
+              <FallbackImage
+                src={product.mainImageUrl}
+                alt={product.name}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <span className="material-symbols-outlined text-5xl text-outline-variant">
+                  medication
+                </span>
+              </div>
+            )}
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">

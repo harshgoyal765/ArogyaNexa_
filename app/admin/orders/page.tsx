@@ -12,6 +12,7 @@ import { formatCurrency, formatDate } from '@/lib/utils';
 import type { OrderResponse } from '@/types/order';
 import type { PagedResponse } from '@/types/api';
 
+
 const NAV_ITEMS = [
   { href: '/admin/dashboard', icon: 'dashboard', label: 'Overview' },
   { href: '/admin/products', icon: 'inventory_2', label: 'Products' },
@@ -52,7 +53,7 @@ function AdminOrdersContent() {
   const handleStatusUpdate = async (uuid: string, status: string) => {
     setUpdating(uuid);
     try {
-      await ordersApi.updateStatus(uuid, status);
+      await ordersService.updateStatus(uuid, status);
       showToast('Order status updated', 'success');
       fetchOrders();
     } catch {

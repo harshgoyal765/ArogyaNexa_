@@ -17,11 +17,6 @@ const NAV_ITEMS = [
   { href: '/pharmacist/prescriptions', icon: 'medical_services', label: 'Clinical Review' },
   { href: '/admin/logistics', icon: 'local_shipping', label: 'Logistics' },
 ];
-  label: s.label, count: s.count.toLocaleString('en-IN'),
-  growth: s.growth, growthColor: s.positive ? 'text-secondary' : 'text-error',
-  width: s.width, barColor: s.positive ? 'bg-primary/80' : 'bg-primary/40',
-}));
-
 
 const ALERTS = [
   { icon: 'insights', color: 'text-secondary', bg: 'bg-secondary-container/20', title: 'Market Shift Alert', desc: 'Bulk pricing in the South has dropped 4%. Adjust proposals.' },

@@ -420,72 +420,114 @@ export const usageExamples = {
 /**
  * Data Access Helper Functions
  */
+// export const dataHelpers = {
+//   /**
+//    * Get all images by category
+//    * @param {string} category - Image category (e.g., 'product', 'research', 'wellness')
+//    * @returns {Array} Array of image objects
+//    */
+//   getImagesByCategory: (category) => {
+//     const allImages = Object.values(images).flat()
+//     return allImages.filter(img => img.category === category)
+//   },
+
+//   /**
+//    * Get product by ID
+//    * @param {number} id - Product ID
+//    * @returns {Object} Product object
+//    */
+//   getProductById: (id) => {
+//     return dummyData.products.featured.find(p => p.id === id)
+//   },
+
+//   /**
+//    * Get article by ID
+//    * @param {number} id - Article ID
+//    * @returns {Object} Article object
+//    */
+//   getArticleById: (id) => {
+//     return dummyData.articles.latestResearch.find(a => a.id === id)
+//   },
+
+//   /**
+//    * Filter products by category
+//    * @param {string} category - Category name
+//    * @returns {Array} Filtered products
+//    */
+//   getProductsByCategory: (category) => {
+//     return dummyData.products.featured.filter(p => p.category === category)
+//   },
+
+//   /**
+//    * Get cart summary
+//    * @returns {Object} Cart summary with calculations
+//    */
+//   getCartSummary: () => ({
+//     items: dummyData.products.cartItems,
+//     itemCount: dummyData.products.cartItems.reduce((sum, item) => sum + item.quantity, 0),
+//     subtotal: cartItemData.summary.subtotal,
+//     tax: cartItemData.summary.tax,
+//     total: cartItemData.summary.total,
+//     currency: cartItemData.summary.currency
+//   }),
+
+//   /**
+//    * Get navigation menu by type
+//    * @param {string} type - Menu type (e.g., 'main', 'admin', 'doctor')
+//    * @returns {Array} Menu items
+//    */
+//   getMenuByType: (type) => {
+//     switch (type) {
+//       case 'main': return dummyData.navigation.mainMenu
+//       case 'admin': return dummyData.navigation.adminMenu
+//       case 'doctor': return dummyData.navigation.doctorMenu
+//       case 'categories': return dummyData.navigation.sidebarCategories
+//       default: return []
+//     }
+//   }
+// }
+
+
 export const dataHelpers = {
-  /**
-   * Get all images by category
-   * @param {string} category - Image category (e.g., 'product', 'research', 'wellness')
-   * @returns {Array} Array of image objects
-   */
-  getImagesByCategory: (category) => {
-    const allImages = Object.values(images).flat()
-    return allImages.filter(img => img.category === category)
+  getImagesByCategory: (category: string) => {
+    const allImages = Object.values(images).flat() as any[];
+    return allImages.filter((img: any) => img.category === category);
   },
 
-  /**
-   * Get product by ID
-   * @param {number} id - Product ID
-   * @returns {Object} Product object
-   */
-  getProductById: (id) => {
-    return dummyData.products.featured.find(p => p.id === id)
+  getProductById: (id: number) => {
+    return dummyData.products.featured.find((p: any) => p.id === id);
   },
 
-  /**
-   * Get article by ID
-   * @param {number} id - Article ID
-   * @returns {Object} Article object
-   */
-  getArticleById: (id) => {
-    return dummyData.articles.latestResearch.find(a => a.id === id)
+  getArticleById: (id: number) => {
+    return dummyData.articles.latestResearch.find((a: any) => a.id === id);
   },
 
-  /**
-   * Filter products by category
-   * @param {string} category - Category name
-   * @returns {Array} Filtered products
-   */
-  getProductsByCategory: (category) => {
-    return dummyData.products.featured.filter(p => p.category === category)
+  getProductsByCategory: (category: string) => {
+    return dummyData.products.featured.filter((p: any) => p.category === category);
   },
 
-  /**
-   * Get cart summary
-   * @returns {Object} Cart summary with calculations
-   */
   getCartSummary: () => ({
     items: dummyData.products.cartItems,
-    itemCount: dummyData.products.cartItems.reduce((sum, item) => sum + item.quantity, 0),
+    itemCount: dummyData.products.cartItems.reduce(
+      (sum: number, item: any) => sum + item.quantity,
+      0
+    ),
     subtotal: cartItemData.summary.subtotal,
     tax: cartItemData.summary.tax,
     total: cartItemData.summary.total,
     currency: cartItemData.summary.currency
   }),
 
-  /**
-   * Get navigation menu by type
-   * @param {string} type - Menu type (e.g., 'main', 'admin', 'doctor')
-   * @returns {Array} Menu items
-   */
-  getMenuByType: (type) => {
+  getMenuByType: (type: string) => {
     switch (type) {
-      case 'main': return dummyData.navigation.mainMenu
-      case 'admin': return dummyData.navigation.adminMenu
-      case 'doctor': return dummyData.navigation.doctorMenu
-      case 'categories': return dummyData.navigation.sidebarCategories
-      default: return []
+      case 'main': return dummyData.navigation.mainMenu;
+      case 'admin': return dummyData.navigation.adminMenu;
+      case 'doctor': return dummyData.navigation.doctorMenu;
+      case 'categories': return dummyData.navigation.sidebarCategories;
+      default: return [];
     }
   }
-}
+};
 
 // ==================== EXPORT ALL DATA ====================
 export default {

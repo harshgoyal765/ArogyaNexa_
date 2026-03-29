@@ -13,6 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { addToCartThunk } from '@/store/cartSlice';
 import { formatCurrency, formatDate, getScheduleBadgeColor, cn } from '@/lib/utils';
 import type { ProductResponse } from '@/types/product';
+import Image from 'next/image';
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();

@@ -61,7 +61,7 @@ function AdminPaymentsContent() {
   };
 
   // Demo data
-  const payments = data?.content ?? MOCK_PAYMENTS;
+  const payments = data?.content ?? [];
 
   return (
     <>

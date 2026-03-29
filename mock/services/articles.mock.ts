@@ -23,6 +23,7 @@ export interface PrescriptionItem {
   fileUrl: string;
   notes?: string;
   createdAt: string;
+  pharmacistNote?: string;
 }
 
 let articleStore: ArticleItem[] = [...mockArticles];
