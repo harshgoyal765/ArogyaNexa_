@@ -1,0 +1,62 @@
+{
+  "uuid": "cart-001",
+  "customerId": "usr-001",
+  "status": "ACTIVE",
+  "items": [
+    {
+      "uuid": "ci-001",
+      "productId": 1,
+      "productName": "Atorvastatin Calcium",
+      "productSlug": "atorvastatin-calcium",
+      "quantity": 2,
+      "unitPrice": 24.50,
+      "currentPrice": 24.50,
+      "lineTotal": 49.00,
+      "prescriptionRequired": true,
+      "nearExpiry": false,
+      "expiryDate": "2026-01-15",
+      "scheduleType": "H",
+      "priceChanged": false,
+      "addedAt": "2024-10-24T09:00:00Z"
+    },
+    {
+      "uuid": "ci-002",
+      "productId": 5,
+      "productName": "Complex Vitamin D3",
+      "productSlug": "complex-vitamin-d3",
+      "quantity": 1,
+      "unitPrice": 12.50,
+      "currentPrice": 12.50,
+      "lineTotal": 12.50,
+      "prescriptionRequired": false,
+      "nearExpiry": false,
+      "expiryDate": "2026-05-01",
+      "scheduleType": "OTC",
+      "priceChanged": false,
+      "addedAt": "2024-10-24T09:05:00Z"
+    },
+    {
+      "uuid": "ci-003",
+      "productId": 3,
+      "productName": "Amoxicillin Forte",
+      "productSlug": "amoxicillin-forte",
+      "quantity": 1,
+      "unitPrice": 32.00,
+      "currentPrice": 32.00,
+      "lineTotal": 32.00,
+      "prescriptionRequired": true,
+      "nearExpiry": true,
+      "expiryDate": "2025-03-01",
+      "scheduleType": "H",
+      "drugInteractionWarning": "May interact with Atorvastatin at high doses.",
+      "priceChanged": false,
+      "addedAt": "2024-10-24T09:10:00Z"
+    }
+  ],
+  "itemCount": 3,
+  "totalPrice": 93.50,
+  "requiresPrescription": true,
+  "prescriptionValidated": false,
+  "createdAt": "2024-10-24T09:00:00Z",
+  "updatedAt": "2024-10-24T09:10:00Z"
+}

@@ -1,15 +1,32 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Navbar from '@/components/ui/Navbar';
-import Footer from '@/components/ui/Footer';
+import { usePathname, useRouter } from 'next/navigation';
 import ProtectedRoute from '@/components/ui/ProtectedRoute';
 import { ToastContainer } from '@/components/ui/Toast';
-import { useAppSelector } from '@/hooks/useAppDispatch';
+import { useAppSelector, useAppDispatch } from '@/hooks/useAppDispatch';
+import { clearAuth } from '@/store/authSlice';
+import { authApi } from '@/lib/api/auth';
 import { ordersService } from '@/lib/services/orders.service';
 import { staticService } from '@/lib/services/static.service';
-import { formatCurrency, formatDate } from '@/lib/utils';
+import { formatCurrency, formatDate, cn } from '@/lib/utils';
 import type { OrderResponse } from '@/types/order';
+import { 
+  ProfileHeaderSkeleton, 
+  WellnessScoreSkeleton, 
+  DashboardCardSkeleton, 
+  ArticleCardSkeleton 
+} from '@/components/ui/LoadingSpinner';
+
+const NAV_ITEMS = [
+  { href: '/dashboard', icon: 'dashboard', label: 'Dashboard' },
+  { href: '/products', icon: 'medication', label: 'Products' },
+  { href: '/orders', icon: 'receipt_long', label: 'My Orders' },
+  { href: '/prescriptions', icon: 'description', label: 'Prescriptions' },
+  { href: '/appointments', icon: 'calendar_month', label: 'Book Appointment' },
+  { href: '/support', icon: 'support_agent', label: 'Support' },
+  { href: '/ai-assistant', icon: 'smart_toy', label: 'AI Assistant' },
+];
 
 export default function PatientDashboardPage() {
   return (
@@ -20,18 +37,35 @@ export default function PatientDashboardPage() {
 }
 
 function PatientDashboardContent() {
+  const pathname = usePathname();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const { user } = useAppSelector(s => s.auth);
   const [recentOrders, setRecentOrders] = useState<OrderResponse[]>([]);
   const [wellnessScore, setWellnessScore] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  // Mock appointments data
+  const upcomingAppointments = [
+    { id: 'APT-001', doctor: 'Dr. Sarah Thorne', specialization: 'Internal Medicine', date: '2024-10-28', time: '10:00 AM', status: 'Confirmed', type: 'Consultation' },
+    { id: 'APT-002', doctor: 'Dr. Rajesh Kumar', specialization: 'Cardiology', date: '2024-11-05', time: '02:00 PM', status: 'Pending', type: 'Follow-up' },
+  ];
+
+  const handleLogout = async () => {
+    try { await authApi.logout(); } catch { /* ignore */ }
+    dispatch(clearAuth());
+    router.push('/');
+  };
 
   useEffect(() => {
-    ordersService.list({ page: 0, size: 3 })
-      .then(({ data }) => setRecentOrders(data.data.content))
-      .catch(() => setRecentOrders([]));
-
-    staticService.getWellness()
-      .then(({ data }) => setWellnessScore(data.data.score))
-      .catch(() => setWellnessScore(0));
+    Promise.all([
+      ordersService.list({ page: 0, size: 3 })
+        .then(({ data }) => setRecentOrders(data.data.content))
+        .catch(() => setRecentOrders([])),
+      staticService.getWellness()
+        .then(({ data }) => setWellnessScore(data.data.score))
+        .catch(() => setWellnessScore(0))
+    ]).finally(() => setLoading(false));
   }, []);
 
   const circumference = 2 * Math.PI * 88;
@@ -43,24 +77,191 @@ function PatientDashboardContent() {
     { label: 'Sleep', value: 'Improving', color: 'text-primary' },
   ];
 
+  if (loading) {
+    return (
+      <div className="bg-surface min-h-screen flex">
+        {/* Sidebar */}
+        <aside className="fixed left-0 top-0 h-screen w-64 border-r border-slate-100 bg-slate-50 flex flex-col z-40">
+          <div className="p-8">
+            <Link href="/" className="font-headline italic text-2xl text-primary block mb-1">ArogyaNexa</Link>
+            <p className="text-xs text-outline font-label uppercase tracking-widest">Patient Portal</p>
+          </div>
+        </aside>
+        <div className="ml-64 flex-1 min-h-screen">
+          <div className="p-8">
+            <ProfileHeaderSkeleton />
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+              <div className="md:col-span-8">
+                <WellnessScoreSkeleton />
+              </div>
+              <div className="md:col-span-4">
+                <DashboardCardSkeleton />
+              </div>
+              <div className="md:col-span-5">
+                <DashboardCardSkeleton />
+              </div>
+              <div className="md:col-span-7">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <ArticleCardSkeleton />
+                  <ArticleCardSkeleton />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <>
-      <Navbar />
-      <div className="pt-20 min-h-screen bg-surface">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          {/* Header */}
-          <header className="mb-12">
-            <span className="section-label text-[10px]">Patient Dashboard</span>
-            <h1 className="font-headline text-4xl mt-2 text-primary">
+    <div className="bg-surface min-h-screen flex">
+      {/* Sidebar */}
+      <aside className="fixed left-0 top-0 h-screen w-64 border-r border-slate-100 bg-slate-50 flex flex-col z-40">
+        <div className="p-8">
+          <Link href="/" className="font-headline italic text-2xl text-primary block mb-1">ArogyaNexa</Link>
+          <p className="text-xs text-outline font-label uppercase tracking-widest">Patient Portal</p>
+        </div>
+        <nav className="flex-1 px-4 space-y-1 overflow-y-auto">
+          {NAV_ITEMS.map((item) => {
+            const active = pathname === item.href;
+            return (
+              <Link key={item.href} href={item.href}
+                className={cn('flex items-center gap-3 px-4 py-3 text-xs font-medium uppercase tracking-wide transition-all hover:translate-x-1 duration-200',
+                  active ? 'text-primary font-semibold border-r-4 border-primary bg-primary-fixed/30' : 'text-on-surface-variant hover:text-primary hover:bg-surface-container-low'
+                )}>
+                <span className="material-symbols-outlined text-xl">{item.icon}</span>
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+        <div className="p-4 border-t border-slate-100 space-y-2">
+          {user && (
+            <div className="flex items-center gap-3 px-2 py-2">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                {user.firstName[0]}{user.lastName[0]}
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-on-surface truncate">{user.firstName} {user.lastName}</p>
+                <p className="text-[10px] text-outline">PATIENT</p>
+              </div>
+            </div>
+          )}
+          <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-2 text-error hover:bg-error-container/20 transition-colors w-full rounded-lg text-xs uppercase tracking-wide">
+            <span className="material-symbols-outlined text-sm">logout</span> Log Out
+          </button>
+        </div>
+      </aside>
+
+      {/* Main */}
+      <div className="ml-64 flex-1 min-h-screen">
+        <header className="sticky top-0 z-30 flex items-center justify-between px-8 h-16 bg-white/80 backdrop-blur-md shadow-sm shadow-primary/5">
+          <div>
+            <h1 className="font-headline text-2xl text-primary">Dashboard</h1>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link 
+              href="/notifications"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Notifications"
+            >
+              <span className="material-symbols-outlined">notifications</span>
+            </Link>
+            <Link 
+              href="/profile" 
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Profile"
+            >
+              <span className="material-symbols-outlined">account_circle</span>
+            </Link>
+          </div>
+        </header>
+
+        <div className="p-8">
+          {/* Welcome Section */}
+          <div className="mb-8">
+            <h2 className="font-headline text-3xl text-primary mb-2">
               Good morning, {user?.firstName || 'there'}.
-            </h1>
-            <p className="text-on-surface-variant mt-2 max-w-2xl">
+            </h2>
+            <p className="text-on-surface-variant max-w-2xl">
               Your personal health overview. We&apos;ve curated these insights to help you maintain your momentum this week.
             </p>
-          </header>
+          </div>
 
           {/* Bento Grid */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+            {/* Upcoming Appointments */}
+            <div className="md:col-span-12 card p-8">
+              <div className="flex justify-between items-center mb-6">
+                <div>
+                  <h2 className="font-headline text-2xl text-primary">Upcoming Appointments</h2>
+                  <p className="text-sm text-on-surface-variant mt-1">Your scheduled doctor consultations</p>
+                </div>
+                <Link href="/appointments" className="btn-primary text-sm">
+                  <span className="material-symbols-outlined text-sm">calendar_add_on</span>
+                  Book New Appointment
+                </Link>
+              </div>
+              
+              {upcomingAppointments.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {upcomingAppointments.map((apt) => (
+                    <div key={apt.id} className="bg-surface-container-low rounded-xl p-6 hover:shadow-md transition-shadow">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-full clinical-gradient flex items-center justify-center text-white font-bold flex-shrink-0">
+                            {apt.doctor.split(' ').map(n => n[0]).join('')}
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-on-surface mb-1">{apt.doctor}</h3>
+                            <p className="text-sm text-primary">{apt.specialization}</p>
+                            <span className={cn('badge text-xs mt-2 inline-block', 
+                              apt.status === 'Confirmed' ? 'bg-tertiary-fixed text-tertiary' : 'bg-amber-100 text-amber-800'
+                            )}>
+                              {apt.status}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-6 text-sm">
+                        <div className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-primary text-lg">calendar_today</span>
+                          <span className="text-on-surface-variant">{apt.date}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-primary text-lg">schedule</span>
+                          <span className="text-on-surface-variant">{apt.time}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-primary text-lg">medical_services</span>
+                          <span className="text-on-surface-variant">{apt.type}</span>
+                        </div>
+                      </div>
+                      <div className="flex gap-3 mt-4 pt-4 border-t border-outline-variant/20">
+                        <button className="flex-1 btn-secondary text-xs">
+                          <span className="material-symbols-outlined text-xs">event_busy</span>
+                          Reschedule
+                        </button>
+                        <button className="flex-1 btn-secondary text-xs text-error border-error">
+                          <span className="material-symbols-outlined text-xs">cancel</span>
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12 bg-surface-container-low rounded-xl">
+                  <span className="material-symbols-outlined text-6xl text-outline mb-4">event_available</span>
+                  <p className="text-on-surface-variant mb-4">No upcoming appointments</p>
+                  <Link href="/appointments" className="btn-primary text-sm inline-flex">
+                    <span className="material-symbols-outlined text-sm">calendar_add_on</span>
+                    Book Your First Appointment
+                  </Link>
+                </div>
+              )}
+            </div>
+
             {/* Wellness Score */}
             <div className="md:col-span-8 card p-8 flex flex-col md:flex-row items-center gap-12">
               <div className="relative w-48 h-48 flex-shrink-0">
@@ -199,16 +400,7 @@ function PatientDashboardContent() {
         </div>
       </div>
 
-      {/* FAB */}
-      <div className="fixed bottom-8 right-8 z-40">
-        <Link href="/ai-assistant" className="flex items-center gap-2 clinical-gradient text-white px-6 py-4 rounded-full shadow-primary-lg hover:shadow-primary-md hover:scale-105 transition-all duration-300">
-          <span className="material-symbols-outlined">medical_information</span>
-          <span className="font-bold text-sm tracking-wide">Ask AI Assistant</span>
-        </Link>
-      </div>
-
-      <Footer />
       <ToastContainer />
-    </>
+    </div>
   );
 }

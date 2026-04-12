@@ -7,7 +7,22 @@ import type { ApiResponse, PagedResponse } from '@/types/api';
 import type { PaymentResponse } from '@/lib/api/payments';
 import { mockCall, ok, fail, paginate } from '@/mock/engine';
 
+// Load initial data from JSON file
 let store: PaymentResponse[] = [];
+let dataLoaded = false;
+
+async function loadPaymentsData() {
+  if (dataLoaded) return;
+  try {
+    const response = await fetch('/data/payments.json');
+    const data = await response.json();
+    store = data;
+    dataLoaded = true;
+  } catch (error) {
+    console.error('Failed to load payments data:', error);
+    store = [];
+  }
+}
 
 export const mockPaymentsService = {
   initiate: (
@@ -15,7 +30,8 @@ export const mockPaymentsService = {
     amount: number,
     paymentMethod: 'RAZORPAY' | 'COD' | 'WALLET'
   ) =>
-    mockCall<PaymentResponse>(() => {
+    mockCall<PaymentResponse>(async () => {
+      await loadPaymentsData();
       const payment: PaymentResponse = {
         uuid: `pay-${Date.now()}`,
         orderUuid,
@@ -38,7 +54,8 @@ export const mockPaymentsService = {
     razorpayPaymentId: string,
     _razorpaySignature: string
   ) =>
-    mockCall<null>(() => {
+    mockCall<null>(async () => {
+      await loadPaymentsData();
       const payment = store.find((p) => p.gatewayOrderId === razorpayOrderId);
       if (!payment) fail('Payment not found', 404);
       payment!.status = 'SUCCESS';
@@ -48,12 +65,14 @@ export const mockPaymentsService = {
     }),
 
   list: (params?: { page?: number; size?: number }) =>
-    mockCall<PagedResponse<PaymentResponse>>(() =>
-      ok(paginate(store, params?.page ?? 0, params?.size ?? 10))
-    ),
+    mockCall<PagedResponse<PaymentResponse>>(async () => {
+      await loadPaymentsData();
+      return ok(paginate(store, params?.page ?? 0, params?.size ?? 10));
+    }),
 
   refund: (paymentUuid: string, reason: string) =>
-    mockCall<null>(() => {
+    mockCall<null>(async () => {
+      await loadPaymentsData();
       const payment = store.find((p) => p.uuid === paymentUuid);
       if (!payment) fail(`Payment ${paymentUuid} not found`, 404);
       payment!.status = 'REFUNDED';
@@ -61,7 +80,8 @@ export const mockPaymentsService = {
     }),
 
   getByUuid: (uuid: string) =>
-    mockCall<PaymentResponse>(() => {
+    mockCall<PaymentResponse>(async () => {
+      await loadPaymentsData();
       const payment = store.find((p) => p.uuid === uuid);
       if (!payment) fail(`Payment ${uuid} not found`, 404);
       return ok(payment!);

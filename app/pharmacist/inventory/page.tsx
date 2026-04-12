@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import ProtectedRoute from '@/components/ui/ProtectedRoute';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { ToastContainer, showToast } from '@/components/ui/Toast';
@@ -62,14 +63,30 @@ function InventoryContent() {
             <h1 className="font-headline text-2xl text-primary">Inventory</h1>
             <p className="text-xs text-on-surface-variant">Stock levels &amp; dispensing reference</p>
           </div>
-          <div className="relative">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-xl text-sm w-64 focus:ring-2 focus:ring-primary/10 outline-none"
-              placeholder="Search by name or salt..."
-            />
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-xl text-sm w-64 focus:ring-2 focus:ring-primary/10 outline-none"
+                placeholder="Search by name or salt..."
+              />
+            </div>
+            <Link 
+              href="/pharmacist/notifications"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Notifications"
+            >
+              <span className="material-symbols-outlined">notifications</span>
+            </Link>
+            <Link 
+              href="/pharmacist/profile"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Profile"
+            >
+              <span className="material-symbols-outlined">account_circle</span>
+            </Link>
           </div>
         </header>
 

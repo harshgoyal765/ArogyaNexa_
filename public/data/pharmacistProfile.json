@@ -1,0 +1,43 @@
+{
+  "uuid": "usr-003",
+  "firstName": "Sarah",
+  "lastName": "Miller",
+  "email": "sarah.miller@arogyanexa.com",
+  "phone": "+919876543212",
+  "role": "PHARMACIST",
+  "licenseNumber": "PCI-2019-12345",
+  "registrationNumber": "REG/MH/2019/54321",
+  "pharmacyName": "ArogyaNexa Central Pharmacy",
+  "pharmacyLocation": "Mumbai, Maharashtra",
+  "experience": "6 years",
+  "education": [
+    {
+      "degree": "B.Pharm",
+      "institution": "Mumbai University",
+      "year": "2018"
+    },
+    {
+      "degree": "M.Pharm (Clinical Pharmacy)",
+      "institution": "NIPER, Mohali",
+      "year": "2020"
+    }
+  ],
+  "specializations": [
+    "Clinical Pharmacy",
+    "Drug Information",
+    "Medication Therapy Management"
+  ],
+  "certifications": [
+    "Certified Diabetes Educator",
+    "Immunization Certified"
+  ],
+  "prescriptionsReviewed": 5680,
+  "prescriptionsApproved": 5420,
+  "approvalRate": 95.4,
+  "averageReviewTime": "4.2 minutes",
+  "languages": ["English", "Hindi", "Marathi"],
+  "bio": "Licensed pharmacist specializing in prescription review and medication therapy management.",
+  "joinedDate": "2024-03-05T10:00:00Z",
+  "lastActivity": "2024-10-24T08:00:00Z",
+  "shiftTiming": "10:00 AM - 7:00 PM"
+}

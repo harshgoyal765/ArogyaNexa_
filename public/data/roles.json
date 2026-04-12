@@ -1,0 +1,148 @@
+[
+  {
+    "roleId": "SUPER_ADMIN",
+    "roleName": "Super Administrator",
+    "description": "System owner with developer-level access. Can create Admin users and monitor system health. CANNOT access business data.",
+    "permissions": [
+      "system:monitor",
+      "system:health:view",
+      "system:logs:view",
+      "system:api:monitor",
+      "admin:create",
+      "admin:view:list"
+    ],
+    "restrictions": [
+      "NO_BUSINESS_DATA_ACCESS",
+      "NO_CUSTOMER_DATA_ACCESS",
+      "NO_ORDER_DATA_ACCESS",
+      "NO_PRODUCT_MANAGEMENT",
+      "NO_CRM_ACCESS"
+    ],
+    "canCreate": ["ADMIN"],
+    "createdBy": "SYSTEM"
+  },
+  {
+    "roleId": "ADMIN",
+    "roleName": "Administrator",
+    "description": "Platform owner (ArogyaNexa). Can manage all business operations and create sub-roles. Can view all users except SuperAdmin.",
+    "permissions": [
+      "user:create",
+      "user:view:all",
+      "user:edit",
+      "user:delete",
+      "doctor:create",
+      "doctor:manage",
+      "pharmacist:create",
+      "pharmacist:manage",
+      "content_editor:create",
+      "content_editor:manage",
+      "product:create",
+      "product:edit",
+      "product:delete",
+      "order:view:all",
+      "order:manage",
+      "prescription:view:all",
+      "crm:access",
+      "analytics:view:all",
+      "payment:view:all"
+    ],
+    "restrictions": [
+      "CANNOT_VIEW_SUPERADMIN",
+      "CANNOT_MODIFY_SUPERADMIN"
+    ],
+    "canCreate": ["DOCTOR", "PHARMACIST", "CONTENT_EDITOR"],
+    "createdBy": "SUPER_ADMIN"
+  },
+  {
+    "roleId": "DOCTOR",
+    "roleName": "Doctor",
+    "description": "Medical professional. Can manage prescriptions and patient consultations.",
+    "permissions": [
+      "prescription:create",
+      "prescription:approve",
+      "prescription:reject",
+      "patient:view:assigned",
+      "consultation:manage",
+      "medical_record:view"
+    ],
+    "restrictions": [
+      "NO_ADMIN_ACCESS",
+      "NO_PRODUCT_MANAGEMENT",
+      "NO_USER_MANAGEMENT",
+      "NO_SYSTEM_ACCESS"
+    ],
+    "canCreate": [],
+    "createdBy": "ADMIN"
+  },
+  {
+    "roleId": "PHARMACIST",
+    "roleName": "Pharmacist",
+    "description": "Licensed pharmacist. Can review prescriptions, manage inventory, and process orders.",
+    "permissions": [
+      "prescription:review",
+      "prescription:verify",
+      "prescription:approve",
+      "prescription:reject",
+      "inventory:view",
+      "inventory:update",
+      "order:view:assigned",
+      "order:process",
+      "product:view"
+    ],
+    "restrictions": [
+      "NO_ADMIN_ACCESS",
+      "NO_USER_MANAGEMENT",
+      "NO_SYSTEM_ACCESS",
+      "NO_CRM_ACCESS"
+    ],
+    "canCreate": [],
+    "createdBy": "ADMIN"
+  },
+  {
+    "roleId": "CONTENT_EDITOR",
+    "roleName": "Content Editor",
+    "description": "Content management specialist. Can create and edit articles, wellness content.",
+    "permissions": [
+      "article:create",
+      "article:edit",
+      "article:delete",
+      "article:publish",
+      "wellness:create",
+      "wellness:edit",
+      "media:upload"
+    ],
+    "restrictions": [
+      "NO_ADMIN_ACCESS",
+      "NO_USER_MANAGEMENT",
+      "NO_SYSTEM_ACCESS",
+      "NO_ORDER_ACCESS",
+      "NO_PRESCRIPTION_ACCESS"
+    ],
+    "canCreate": [],
+    "createdBy": "ADMIN"
+  },
+  {
+    "roleId": "CUSTOMER",
+    "roleName": "Customer",
+    "description": "End user. Can self-register, place orders, upload prescriptions, and manage own account.",
+    "permissions": [
+      "account:view:own",
+      "account:edit:own",
+      "account:delete:own",
+      "order:create",
+      "order:view:own",
+      "prescription:upload",
+      "prescription:view:own",
+      "product:view",
+      "cart:manage"
+    ],
+    "restrictions": [
+      "NO_ADMIN_ACCESS",
+      "NO_OTHER_USER_DATA",
+      "NO_SYSTEM_ACCESS",
+      "SELF_SERVICE_ONLY"
+    ],
+    "canCreate": [],
+    "createdBy": "SELF_REGISTRATION"
+  }
+]

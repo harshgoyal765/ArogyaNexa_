@@ -4,6 +4,7 @@ import { Search, Shield } from 'lucide-react';
 import AdminSidebar from '@/components/layout/AdminSidebar';
 import ProtectedRoute from '@/components/ui/ProtectedRoute';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import AddUserModal from '@/components/admin/AddUserModal';
 import { ToastContainer, showToast } from '@/components/ui/Toast';
 import api from '@/lib/axios';
 import { formatDate } from '@/lib/utils';
@@ -21,7 +22,7 @@ const NAV_ITEMS = [
 
 export default function AdminUsersPage() {
   return (
-    <ProtectedRoute requiredRole="ADMIN">
+    <ProtectedRoute requiredRole="ADMIN" blockSuperAdmin={true}>
       <AdminUsersContent />
     </ProtectedRoute>
   );
@@ -32,6 +33,7 @@ function AdminUsersContent() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -46,12 +48,14 @@ function AdminUsersContent() {
         try {
           const { data: res } = await staticService.getUsers({ page, size: 15, search: search || undefined });
           const users = res.data;
+          // Filter out SUPER_ADMIN users - Admin cannot see them
+          const filteredUsers = users.filter(u => !u.roles.includes('SUPER_ADMIN'));
           setData({
-            content: users,
+            content: filteredUsers,
             page,
             size: 15,
-            totalElements: users.length,
-            totalPages: Math.ceil(users.length / 15),
+            totalElements: filteredUsers.length,
+            totalPages: Math.ceil(filteredUsers.length / 15),
             last: true,
           });
         } catch {
@@ -83,15 +87,24 @@ function AdminUsersContent() {
       <div className="ml-64 min-h-screen bg-surface">
         <header className="sticky top-0 z-30 flex items-center justify-between px-8 h-16 bg-white/80 backdrop-blur-md shadow-sm shadow-primary/5">
           <h1 className="font-headline text-2xl text-primary">User Management</h1>
-          <div className="relative">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-outline" />
-            <input
-              type="text"
-              placeholder="Search users..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="input-field pl-9 py-2 text-sm w-64"
-            />
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-outline" />
+              <input
+                type="text"
+                placeholder="Search users..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="input-field pl-9 py-2 text-sm w-64"
+              />
+            </div>
+            <button 
+              onClick={() => setShowAddModal(true)}
+              className="btn-primary text-sm"
+            >
+              <span className="material-symbols-outlined text-sm">person_add</span>
+              Add User
+            </button>
           </div>
         </header>
 
@@ -159,6 +172,15 @@ function AdminUsersContent() {
           )}
         </div>
       </div>
+
+      <AddUserModal 
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onSuccess={() => {
+          // Optionally refresh the user list
+        }}
+      />
+
       <ToastContainer />
     </>
   );

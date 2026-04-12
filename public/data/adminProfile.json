@@ -1,0 +1,28 @@
+{
+  "uuid": "usr-004",
+  "firstName": "Aris",
+  "lastName": "Thorne",
+  "email": "aris.thorne@arogyanexa.com",
+  "phone": "+919876543213",
+  "role": "ADMIN",
+  "organization": "ArogyaNexa",
+  "department": "Platform Operations",
+  "employeeId": "ARG-ADM-001",
+  "joinedDate": "2024-01-02T10:00:00Z",
+  "permissions": [
+    "user:create",
+    "user:view:all",
+    "user:edit",
+    "user:delete",
+    "product:manage",
+    "order:view:all",
+    "crm:access",
+    "analytics:view:all"
+  ],
+  "managedUsers": 45,
+  "activeProjects": 3,
+  "lastActivity": "2024-10-24T07:30:00Z",
+  "bio": "Platform administrator responsible for ArogyaNexa operations and user management.",
+  "officeLocation": "Mumbai, India",
+  "workingHours": "9:00 AM - 6:00 PM IST"
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "label": "Lead Generation",
+    "count": 1240,
+    "growth": "+12%",
+    "positive": true,
+    "width": "95%"
+  },
+  {
+    "label": "Qualified Opportunities",
+    "count": 482,
+    "growth": "+5%",
+    "positive": true,
+    "width": "45%"
+  },
+  {
+    "label": "Proposal Sent",
+    "count": 128,
+    "growth": "-2%",
+    "positive": false,
+    "width": "20%"
+  },
+  {
+    "label": "Closed Deals",
+    "count": 52,
+    "growth": "+18%",
+    "positive": true,
+    "width": "12%"
+  }
+]

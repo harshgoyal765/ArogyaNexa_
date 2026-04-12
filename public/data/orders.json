@@ -1,0 +1,168 @@
+[
+  {
+    "uuid": "ord-001",
+    "customerId": "usr-001",
+    "orderNumber": "ORD-20241024-RX882910",
+    "status": "CONFIRMED",
+    "paymentStatus": "PAID",
+    "items": [
+      {
+        "uuid": "item-001",
+        "productId": 1,
+        "productName": "Atorvastatin Calcium",
+        "productSlug": "atorvastatin-calcium",
+        "quantity": 2,
+        "unitPrice": 24.50,
+        "lineTotal": 49.00,
+        "prescriptionRequired": true,
+        "scheduleType": "H"
+      },
+      {
+        "uuid": "item-002",
+        "productId": 5,
+        "productName": "Complex Vitamin D3",
+        "productSlug": "complex-vitamin-d3",
+        "quantity": 1,
+        "unitPrice": 12.50,
+        "lineTotal": 12.50,
+        "prescriptionRequired": false,
+        "scheduleType": "OTC"
+      },
+      {
+        "uuid": "item-003",
+        "productId": 8,
+        "productName": "Advanced Omega Complex",
+        "productSlug": "advanced-omega-complex",
+        "quantity": 3,
+        "unitPrice": 28.50,
+        "lineTotal": 85.50,
+        "prescriptionRequired": false,
+        "scheduleType": "OTC"
+      }
+    ],
+    "subtotal": 147.00,
+    "discountAmount": 4.50,
+    "shippingAmount": 0,
+    "totalAmount": 142.50,
+    "requiresPrescription": true,
+    "prescriptionVerified": true,
+    "prescriptionId": "rx-001",
+    "shippingAddress": {
+      "name": "Julian Vane",
+      "phone": "9876543210",
+      "addressLine1": "42 Marine Drive",
+      "addressLine2": "Apt 8B",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400001"
+    },
+    "paymentId": "pay-001",
+    "paymentMethod": "RAZORPAY",
+    "paidAt": "2024-10-24T11:30:00Z",
+    "notes": "Please deliver before 6 PM.",
+    "statusHistory": [
+      {
+        "toStatus": "CREATED",
+        "changedBy": "system",
+        "createdAt": "2024-10-24T09:00:00Z"
+      },
+      {
+        "fromStatus": "CREATED",
+        "toStatus": "APPROVED",
+        "changedBy": "pharmacist",
+        "createdAt": "2024-10-24T10:00:00Z"
+      },
+      {
+        "fromStatus": "APPROVED",
+        "toStatus": "CONFIRMED",
+        "changedBy": "system",
+        "reason": "Payment verified",
+        "createdAt": "2024-10-24T11:30:00Z"
+      }
+    ],
+    "createdAt": "2024-10-24T09:00:00Z",
+    "updatedAt": "2024-10-24T11:30:00Z"
+  },
+  {
+    "uuid": "ord-002",
+    "customerId": "usr-001",
+    "orderNumber": "ORD-20241018-RX881452",
+    "status": "SHIPPED",
+    "paymentStatus": "PAID",
+    "items": [
+      {
+        "uuid": "item-004",
+        "productId": 4,
+        "productName": "Salbutamol Inhaler",
+        "productSlug": "salbutamol-inhaler",
+        "quantity": 1,
+        "unitPrice": 45.99,
+        "lineTotal": 45.99,
+        "prescriptionRequired": true,
+        "scheduleType": "H1"
+      },
+      {
+        "uuid": "item-005",
+        "productId": 10,
+        "productName": "Cetirizine 10mg",
+        "productSlug": "cetirizine-10mg",
+        "quantity": 2,
+        "unitPrice": 10.00,
+        "lineTotal": 20.00,
+        "prescriptionRequired": false,
+        "scheduleType": "OTC"
+      },
+      {
+        "uuid": "item-006",
+        "productId": 11,
+        "productName": "Pantoprazole 40mg",
+        "productSlug": "pantoprazole-40mg",
+        "quantity": 1,
+        "unitPrice": 23.00,
+        "lineTotal": 23.00,
+        "prescriptionRequired": true,
+        "scheduleType": "H"
+      }
+    ],
+    "subtotal": 88.99,
+    "discountAmount": 0,
+    "shippingAmount": 0,
+    "totalAmount": 89.00,
+    "requiresPrescription": true,
+    "prescriptionVerified": true,
+    "prescriptionId": "rx-002",
+    "shippingAddress": {
+      "name": "Julian Vane",
+      "phone": "9876543210",
+      "addressLine1": "42 Marine Drive",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400001"
+    },
+    "paymentId": "pay-002",
+    "paymentMethod": "RAZORPAY",
+    "paidAt": "2024-10-18T14:00:00Z",
+    "statusHistory": [
+      {
+        "toStatus": "CREATED",
+        "changedBy": "system",
+        "createdAt": "2024-10-18T09:00:00Z"
+      },
+      {
+        "fromStatus": "CREATED",
+        "toStatus": "CONFIRMED",
+        "changedBy": "system",
+        "createdAt": "2024-10-18T14:00:00Z"
+      },
+      {
+        "fromStatus": "CONFIRMED",
+        "toStatus": "SHIPPED",
+        "changedBy": "logistics",
+        "reason": "Dispatched via FedEx Health",
+        "createdAt": "2024-10-19T08:00:00Z"
+      }
+    ],
+    "createdAt": "2024-10-18T09:00:00Z",
+    "updatedAt": "2024-10-19T08:00:00Z"
+  }
+]

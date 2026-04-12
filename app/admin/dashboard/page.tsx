@@ -9,6 +9,13 @@ import { ordersService, productsService, staticService } from '@/lib/services';
 import { formatCurrency } from '@/lib/utils';
 import type { OrderResponse } from '@/types/order';
 import type { AdminMetrics } from '@/types/mockData';
+import { 
+  ProfileHeaderSkeleton, 
+  MetricCardSkeleton, 
+  ChartSkeleton, 
+  TableSkeleton,
+  DashboardCardSkeleton 
+} from '@/components/ui/LoadingSpinner';
 
 const NAV_ITEMS = [
   { href: '/admin/dashboard', icon: 'dashboard', label: 'Overview', roles: ['ADMIN', 'SUPER_ADMIN'] },
@@ -23,7 +30,7 @@ const BAR_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export default function AdminDashboardPage() {
   return (
-    <ProtectedRoute requiredRole="ADMIN">
+    <ProtectedRoute requiredRole="ADMIN" blockSuperAdmin={true}>
       <AdminDashboardContent />
     </ProtectedRoute>
   );
@@ -34,31 +41,28 @@ function AdminDashboardContent() {
   const [totalProducts, setTotalProducts] = useState(0);
   const [pendingOrders, setPendingOrders] = useState(0);
   const [metricsData, setMetricsData] = useState<AdminMetrics | null>(null);
+  const [loading, setLoading] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    ordersService.list({ page: 0, size: 5 })
-      .then(({ data }) => {
-        const orders = data.data.content;
-        setRecentOrders(orders);
-        setPendingOrders(orders.filter(o => o.status === 'PENDING_PRESCRIPTION' || o.status === 'CREATED').length);
-      })
-      .catch(() => {
-        setRecentOrders([]);
-        setPendingOrders(0);
-      });
-
-    productsService.list({ page: 0, size: 1 })
-      .then(({ data }) => {
-        setTotalProducts(data.data.totalElements);
-      })
-      .catch(() => {
-        setTotalProducts(0);
-      });
-
-    staticService.getAdminMetrics()
-      .then(({ data }) => setMetricsData(data.data))
-      .catch(() => setMetricsData(null));
+    Promise.all([
+      ordersService.list({ page: 0, size: 5 })
+        .then(({ data }) => {
+          const orders = data.data.content;
+          setRecentOrders(orders);
+          setPendingOrders(orders.filter(o => o.status === 'PENDING_PRESCRIPTION' || o.status === 'CREATED').length);
+        })
+        .catch(() => {
+          setRecentOrders([]);
+          setPendingOrders(0);
+        }),
+      productsService.list({ page: 0, size: 1 })
+        .then(({ data }) => setTotalProducts(data.data.totalElements))
+        .catch(() => setTotalProducts(0)),
+      staticService.getAdminMetrics()
+        .then(({ data }) => setMetricsData(data.data))
+        .catch(() => setMetricsData(null))
+    ]).finally(() => setLoading(false));
   }, []);
 
   // Mini sparkline canvas
@@ -92,6 +96,45 @@ function AdminDashboardContent() {
     { icon: 'warning', label: 'Stock Alerts', value: `${metricsData?.stockAlerts ?? 0} Items`, badge: `${metricsData?.stockAlertsCritical ?? 0} Critical`, badgeColor: 'bg-amber-100 text-amber-700' },
   ];
 
+  if (loading) {
+    return (
+      <>
+        <AdminSidebar title="ArogyaNexa" subtitle="Pharmacy Admin" navItems={NAV_ITEMS} />
+        <div className="ml-64 min-h-screen bg-surface">
+          <header className="sticky top-0 z-30 flex justify-between items-center px-8 h-16 bg-white/80 backdrop-blur-md shadow-sm shadow-primary/5">
+            <div className="relative max-w-md w-full">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+              <input className="w-full bg-surface-container-low border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/10 outline-none" placeholder="Search prescriptions, orders, patients..." />
+            </div>
+            <div className="flex items-center gap-4">
+              <Link href="/admin/notifications" className="relative p-2 text-on-surface-variant hover:text-primary transition-colors" aria-label="Notifications">
+                <span className="material-symbols-outlined">notifications</span>
+              </Link>
+              <Link href="/admin/profile" className="p-2 text-on-surface-variant hover:text-primary transition-colors" aria-label="Profile">
+                <span className="material-symbols-outlined">account_circle</span>
+              </Link>
+            </div>
+          </header>
+          <div className="p-8 max-w-7xl mx-auto space-y-8">
+            <ProfileHeaderSkeleton />
+            <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {Array.from({ length: 4 }).map((_, i) => <MetricCardSkeleton key={i} />)}
+            </section>
+            <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2"><ChartSkeleton /></div>
+              <div className="space-y-6">
+                <DashboardCardSkeleton />
+                <DashboardCardSkeleton />
+              </div>
+            </section>
+            <TableSkeleton rows={5} columns={5} />
+          </div>
+        </div>
+        <ToastContainer />
+      </>
+    );
+  }
+
   return (
     <>
       <AdminSidebar title="ArogyaNexa" subtitle="Pharmacy Admin" navItems={NAV_ITEMS} />
@@ -103,10 +146,21 @@ function AdminDashboardContent() {
             <input className="w-full bg-surface-container-low border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/10 outline-none" placeholder="Search prescriptions, orders, patients..." />
           </div>
           <div className="flex items-center gap-4">
-            <button className="relative p-2 text-on-surface-variant hover:text-primary transition-colors">
+            <Link 
+              href="/admin/notifications"
+              className="relative p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Notifications"
+            >
               <span className="material-symbols-outlined">notifications</span>
               <span className="absolute top-1 right-1 w-2 h-2 bg-error rounded-full border-2 border-white" />
-            </button>
+            </Link>
+            <Link 
+              href="/admin/profile"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Profile"
+            >
+              <span className="material-symbols-outlined">account_circle</span>
+            </Link>
           </div>
         </header>
 

@@ -1,15 +1,10 @@
 ﻿'use client';
+import { useState } from 'react';
 import Link from 'next/link';
 import AdminSidebar from '@/components/layout/AdminSidebar';
 import ProtectedRoute from '@/components/ui/ProtectedRoute';
-import { ToastContainer } from '@/components/ui/Toast';
+import { ToastContainer, showToast } from '@/components/ui/Toast';
 import { imageSelectors, getImagesByCategory } from '@/lib/images';
-
-const NAV_ITEMS = [
-  { href: '/admin/content', icon: 'edit_note', label: 'Content Hub' },
-  { href: '/wellness', icon: 'spa', label: 'Wellness Hub' },
-  { href: '/admin/dashboard', icon: 'dashboard', label: 'Admin Dashboard', roles: ['ADMIN', 'SUPER_ADMIN'] },
-];
 
 const CALENDAR_DAYS = [
   { day: 'MON', date: '12', event: 'Promotion: Collagen Pure', eventColor: 'bg-primary/10 text-primary', borderColor: '' },
@@ -53,21 +48,54 @@ function ContentEditorContent() {
   const supplementImages = imageSelectors.getSupplementImages();
   const profileImages = imageSelectors.getProfileImages();
 
+  // Modal states
+  const [showSEODetails, setShowSEODetails] = useState(false);
+  const [selectedSegment, setSelectedSegment] = useState<any>(null);
+
+  const handleExportReport = () => {
+    showToast('SEO Report exported successfully', 'success');
+    // In production, this would trigger a download
+  };
+
+  const handleRefineKeywords = () => {
+    showToast('Opening keyword refinement tool...', 'info');
+    // In production, this would open a keyword management interface
+  };
+
+  const handleViewDetails = (segment: any) => {
+    setSelectedSegment(segment);
+    setShowSEODetails(true);
+  };
+
   return (
-    <>
-      <AdminSidebar title="ArogyaNexa" subtitle="Operational Excellence" navItems={NAV_ITEMS} />
-      <div className="ml-64 min-h-screen bg-surface">
+    <div className="bg-surface min-h-screen flex">
+      <AdminSidebar />
+      
+      <div className="ml-64 flex-1 min-h-screen">
         <header className="sticky top-0 z-30 flex items-center justify-between px-8 h-16 bg-white/80 backdrop-blur-md shadow-sm shadow-primary/5">
-          <span className="font-headline italic text-2xl text-primary">ArogyaNexa</span>
-          <div className="hidden md:flex gap-6">
-            {['Dashboard', 'Wellness Hub', 'Analytics'].map((item, i) => (
-              <span key={item} className={`text-sm font-medium ${i === 1 ? 'text-primary font-semibold' : 'text-on-surface-variant'}`}>{item}</span>
-            ))}
+          <div>
+            <h1 className="font-headline text-2xl text-primary">Content Management</h1>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link 
+              href="/content/notifications"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Notifications"
+            >
+              <span className="material-symbols-outlined">notifications</span>
+            </Link>
+            <Link 
+              href="/content/profile" 
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Profile"
+            >
+              <span className="material-symbols-outlined">account_circle</span>
+            </Link>
           </div>
         </header>
 
-        <main className="pl-0 pt-0 min-h-screen">
-          <div className="max-w-7xl mx-auto p-10 space-y-14">
+        <main className="p-10">
+          <div className="max-w-7xl mx-auto space-y-14">
 
             {/* Header & SEO Health */}
             <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b border-outline-variant/15 pb-12">
@@ -103,7 +131,7 @@ function ContentEditorContent() {
                     <h3 className="font-headline text-2xl text-primary mb-1">Editorial Calendar</h3>
                     <p className="text-sm text-on-surface-variant">Scheduled educational campaigns &amp; product launches.</p>
                   </div>
-                  <Link href="/wellness" className="btn-primary text-sm py-2">New Content +</Link>
+                  <Link href="/content/new" className="btn-primary text-sm py-2">New Content +</Link>
                 </div>
                 <div className="grid grid-cols-7 gap-3 flex-1">
                   {CALENDAR_DAYS.map((d) => (
@@ -148,15 +176,27 @@ function ContentEditorContent() {
                     ))}
                   </div>
                 </div>
-                <div className="clinical-gradient rounded-xl p-8 text-white relative overflow-hidden group">
+                <div className="clinical-gradient rounded-xl p-8 text-white relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-300">
+                  <div className="absolute top-4 right-4 w-12 h-12 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <span className="material-symbols-outlined text-2xl">menu_book</span>
+                  </div>
                   <div className="relative z-10">
-                    <p className="section-label text-[10px] text-white/70 mb-2">Editor&apos;s Tip</p>
-                    <h5 className="font-headline text-xl mb-4 italic">&quot;SEO favors consistency over volume.&quot;</h5>
-                    <Link href="/wellness" className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-2 transition-transform">
-                      READ THE MANUAL <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                    <p className="section-label text-[10px] text-white/70 mb-2 uppercase tracking-wider">Editor&apos;s Tip</p>
+                    <h5 className="font-headline text-xl mb-4 italic leading-relaxed">&quot;SEO favors consistency over volume.&quot;</h5>
+                    <p className="text-xs text-white/80 mb-6 leading-relaxed">
+                      Learn proven strategies for building sustainable content authority and organic reach.
+                    </p>
+                    <Link 
+                      href="/content/manual" 
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg text-xs font-bold uppercase tracking-widest transition-all group-hover:translate-x-1"
+                    >
+                      <span className="material-symbols-outlined text-sm">auto_stories</span>
+                      READ THE MANUAL
+                      <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
                     </Link>
                   </div>
                   <div className="absolute -right-12 -bottom-12 w-48 h-48 bg-white/5 rounded-full blur-2xl" />
+                  <div className="absolute top-0 left-0 w-32 h-32 bg-white/5 rounded-full blur-3xl" />
                 </div>
               </div>
 
@@ -177,7 +217,11 @@ function ContentEditorContent() {
                     const articleImage = categoryImages[index % categoryImages.length];
                     
                     return (
-                      <div key={article.title} className="card p-6 hover:shadow-primary-md transition-all duration-300 group">
+                      <Link 
+                        key={article.title} 
+                        href={`/content/edit/${index + 1}`}
+                        className="card p-6 hover:shadow-primary-md transition-all duration-300 group cursor-pointer"
+                      >
                         <div className="w-full h-40 bg-gradient-to-br from-surface-container to-surface-container-high rounded-lg mb-6 flex items-center justify-center overflow-hidden relative">
                           {articleImage ? (
                             <img 
@@ -213,7 +257,7 @@ function ContentEditorContent() {
                           </div>
                           <span className="material-symbols-outlined text-outline group-hover:text-primary transition-colors">edit_square</span>
                         </div>
-                      </div>
+                      </Link>
                     );
                   })}
                 </div>
@@ -227,8 +271,20 @@ function ContentEditorContent() {
                     <p className="text-sm text-on-surface-variant">Deep-dive into keyword saturation and authority scores.</p>
                   </div>
                   <div className="flex gap-2">
-                    <button className="px-4 py-2 bg-surface-container-low text-primary text-xs font-bold uppercase rounded-lg">Export Report</button>
-                    <button className="px-4 py-2 bg-surface-container-low text-primary text-xs font-bold uppercase rounded-lg">Refine Keywords</button>
+                    <button 
+                      onClick={handleExportReport}
+                      className="px-4 py-2 bg-surface-container-low hover:bg-primary/10 text-primary text-xs font-bold uppercase rounded-lg transition-colors flex items-center gap-2"
+                    >
+                      <span className="material-symbols-outlined text-sm">download</span>
+                      Export Report
+                    </button>
+                    <button 
+                      onClick={handleRefineKeywords}
+                      className="px-4 py-2 bg-surface-container-low hover:bg-secondary/10 text-primary text-xs font-bold uppercase rounded-lg transition-colors flex items-center gap-2"
+                    >
+                      <span className="material-symbols-outlined text-sm">tune</span>
+                      Refine Keywords
+                    </button>
                   </div>
                 </div>
                 <div className="overflow-x-auto">
@@ -257,7 +313,14 @@ function ContentEditorContent() {
                             <span className={`badge text-[10px] ${row.scoreColor}`}>{row.score}</span>
                           </td>
                           <td className="py-5">
-                            <button className="text-primary hover:text-primary-container material-symbols-outlined text-lg">visibility</button>
+                            <button 
+                              onClick={() => handleViewDetails(row)}
+                              className="text-primary hover:bg-primary/10 p-2 rounded-lg transition-all flex items-center gap-1 text-xs font-medium"
+                              title="View detailed analytics"
+                            >
+                              <span className="material-symbols-outlined text-lg">visibility</span>
+                              View
+                            </button>
                           </td>
                         </tr>
                       ))}
@@ -269,7 +332,133 @@ function ContentEditorContent() {
           </div>
         </main>
       </div>
+      
+      {/* SEO Details Modal */}
+      {showSEODetails && selectedSegment && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-outline-variant/20 p-6 flex items-center justify-between">
+              <div>
+                <h2 className="font-headline text-2xl text-primary">{selectedSegment.segment}</h2>
+                <p className="text-sm text-on-surface-variant">Detailed SEO Analytics</p>
+              </div>
+              <button
+                onClick={() => setShowSEODetails(false)}
+                className="p-2 hover:bg-surface-container-low rounded-full transition-colors"
+              >
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Overview Stats */}
+              <div className="grid grid-cols-3 gap-4">
+                <div className="card p-4">
+                  <p className="section-label text-[10px] mb-2">Keyword Coverage</p>
+                  <div className="flex items-end gap-2">
+                    <p className="text-3xl font-bold text-primary">{selectedSegment.coverage}%</p>
+                    <div className={`text-xs font-bold mb-1 ${selectedSegment.coverage >= 80 ? 'text-tertiary' : selectedSegment.coverage >= 60 ? 'text-secondary' : 'text-error'}`}>
+                      {selectedSegment.coverage >= 80 ? 'Excellent' : selectedSegment.coverage >= 60 ? 'Good' : 'Needs Work'}
+                    </div>
+                  </div>
+                </div>
+                <div className="card p-4">
+                  <p className="section-label text-[10px] mb-2">Authority Score</p>
+                  <p className="text-3xl font-bold text-primary">{selectedSegment.score}</p>
+                </div>
+                <div className="card p-4">
+                  <p className="section-label text-[10px] mb-2">Traffic Source</p>
+                  <p className="text-sm font-medium text-on-surface mt-2">{selectedSegment.traffic}</p>
+                </div>
+              </div>
+
+              {/* Top Keywords */}
+              <div className="card p-6">
+                <h3 className="font-headline text-lg text-primary mb-4 flex items-center gap-2">
+                  <span className="material-symbols-outlined">search</span>
+                  Top Performing Keywords
+                </h3>
+                <div className="space-y-3">
+                  {[
+                    { keyword: 'natural supplements', volume: '12.5k', rank: 3, trend: 'up' },
+                    { keyword: 'wellness products', volume: '8.2k', rank: 7, trend: 'up' },
+                    { keyword: 'health optimization', volume: '5.8k', rank: 12, trend: 'down' },
+                    { keyword: 'clinical nutrition', volume: '4.1k', rank: 5, trend: 'stable' },
+                  ].map((kw) => (
+                    <div key={kw.keyword} className="flex items-center justify-between p-3 bg-surface-container-low rounded-lg">
+                      <div className="flex-1">
+                        <p className="font-medium text-on-surface">{kw.keyword}</p>
+                        <p className="text-xs text-on-surface-variant">Monthly searches: {kw.volume}</p>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <div className="text-center">
+                          <p className="text-xs text-on-surface-variant">Rank</p>
+                          <p className="text-lg font-bold text-primary">#{kw.rank}</p>
+                        </div>
+                        <span className={`material-symbols-outlined text-sm ${
+                          kw.trend === 'up' ? 'text-tertiary' : kw.trend === 'down' ? 'text-error' : 'text-on-surface-variant'
+                        }`}>
+                          {kw.trend === 'up' ? 'trending_up' : kw.trend === 'down' ? 'trending_down' : 'trending_flat'}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Content Recommendations */}
+              <div className="card p-6">
+                <h3 className="font-headline text-lg text-primary mb-4 flex items-center gap-2">
+                  <span className="material-symbols-outlined">lightbulb</span>
+                  Optimization Recommendations
+                </h3>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-3 p-3 bg-tertiary-container/20 rounded-lg">
+                    <span className="material-symbols-outlined text-tertiary mt-0.5">check_circle</span>
+                    <div>
+                      <p className="font-medium text-on-surface">Increase internal linking</p>
+                      <p className="text-xs text-on-surface-variant">Add 3-5 more internal links to related articles</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3 p-3 bg-secondary-container/20 rounded-lg">
+                    <span className="material-symbols-outlined text-secondary mt-0.5">info</span>
+                    <div>
+                      <p className="font-medium text-on-surface">Update meta descriptions</p>
+                      <p className="text-xs text-on-surface-variant">5 articles need optimized meta descriptions</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3 p-3 bg-error-container/20 rounded-lg">
+                    <span className="material-symbols-outlined text-error mt-0.5">warning</span>
+                    <div>
+                      <p className="font-medium text-on-surface">Improve page load speed</p>
+                      <p className="text-xs text-on-surface-variant">Optimize images to reduce load time by 30%</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3">
+                <button 
+                  onClick={handleExportReport}
+                  className="btn-primary flex-1"
+                >
+                  <span className="material-symbols-outlined text-sm">download</span>
+                  Export Full Report
+                </button>
+                <button 
+                  onClick={() => setShowSEODetails(false)}
+                  className="btn-secondary"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
       <ToastContainer />
-    </>
+    </div>
   );
 }

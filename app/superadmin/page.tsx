@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ProtectedRoute from '@/components/ui/ProtectedRoute';
 import { ToastContainer } from '@/components/ui/Toast';
+import CreateAdminModal from '@/components/superadmin/CreateAdminModal';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { clearAuth } from '@/store/authSlice';
 import { authApi } from '@/lib/api/auth';
@@ -16,14 +17,10 @@ import type { PlatformEvent } from '@/types/mockData';
 // Replace MOCK_PLATFORM_EVENTS with: GET /api/v1/admin/platform-events when audit log API is ready
 
 const NAV_ITEMS = [
-  { href: '/superadmin', icon: 'dashboard', label: 'Dashboard' },
-  { href: '/pharmacist/prescriptions', icon: 'description', label: 'Prescriptions' },
-  { href: '/admin/products', icon: 'inventory_2', label: 'Inventory' },
-  { href: '/pharmacist/prescriptions', icon: 'medical_services', label: 'Clinical Review' },
-  { href: '/admin/orders', icon: 'local_shipping', label: 'Logistics' },
-  { href: '/admin/crm', icon: 'groups', label: 'CRM' },
-  { href: '/admin/content', icon: 'edit_note', label: 'Content' },
-  { href: '/admin/users', icon: 'settings', label: 'Settings' },
+  { href: '/superadmin', icon: 'dashboard', label: 'System Monitor' },
+  { href: '/superadmin/api-health', icon: 'api', label: 'API Health' },
+  { href: '/superadmin/logs', icon: 'description', label: 'System Logs' },
+  { href: '/superadmin/admins', icon: 'admin_panel_settings', label: 'Admin Management' },
 ];
 
 export default function SuperAdminPage() {
@@ -39,6 +36,7 @@ function SuperAdminContent() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [platformEvents, setPlatformEvents] = useState<PlatformEvent[]>([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
     staticService
@@ -70,16 +68,28 @@ function SuperAdminContent() {
             <span className="material-symbols-outlined text-on-surface-variant text-sm">search</span>
             <input className="bg-transparent border-none focus:ring-0 text-sm w-40 ml-2 outline-none" placeholder="Global search..." />
           </div>
-          <button className="p-2 text-on-surface-variant hover:text-primary transition-colors"><span className="material-symbols-outlined">notifications</span></button>
-          <button className="p-2 text-on-surface-variant hover:text-primary transition-colors"><span className="material-symbols-outlined">account_circle</span></button>
+          <Link 
+            href="/superadmin/notifications"
+            className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+            aria-label="Notifications"
+          >
+            <span className="material-symbols-outlined">notifications</span>
+          </Link>
+          <Link 
+            href="/superadmin/profile"
+            className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+            aria-label="Profile"
+          >
+            <span className="material-symbols-outlined">account_circle</span>
+          </Link>
         </div>
       </header>
 
       {/* Sidebar */}
       <aside className="fixed left-0 top-0 flex flex-col pt-20 pb-4 h-screen w-64 border-r border-slate-100 bg-slate-50 z-40">
         <div className="px-6 mb-8">
-          <p className="section-label text-[10px] text-primary/60 mb-1">Operational Excellence</p>
-          <h2 className="font-headline text-lg text-primary leading-tight">ArogyaNexa</h2>
+          <p className="section-label text-[10px] text-primary/60 mb-1">System Administration</p>
+          <h2 className="font-headline text-lg text-primary leading-tight">Developer Portal</h2>
         </div>
         <nav className="flex-1 space-y-1 overflow-y-auto">
           {NAV_ITEMS.map((item) => {
@@ -118,9 +128,9 @@ function SuperAdminContent() {
         {/* Header */}
         <header className="mb-12 flex justify-between items-end">
           <div>
-            <h1 className="font-headline text-5xl text-primary tracking-tight mb-2">Platform Pulse</h1>
+            <h1 className="font-headline text-5xl text-primary tracking-tight mb-2">System Health Monitor</h1>
             <p className="text-on-surface-variant max-w-lg leading-relaxed text-sm">
-              Global oversight for ArogyaNexa infrastructure. Review real-time revenue distributions, server-side health metrics, and strategic growth trajectory.
+              Developer-level system monitoring dashboard. Monitor API health, server metrics, and system logs. No business data access.
             </p>
           </div>
           <div className="flex gap-4">
@@ -131,35 +141,53 @@ function SuperAdminContent() {
 
         {/* Bento Grid */}
         <div className="grid grid-cols-12 gap-8">
-          {/* Revenue Map */}
+          {/* API Health Status */}
           <section className="col-span-8 row-span-2 card p-8 flex flex-col">
             <div className="flex justify-between items-center mb-8">
               <div>
-                <span className="section-label text-[10px] text-secondary">Revenue Density</span>
-                <h3 className="font-headline text-2xl text-primary">Multi-Region Transactions</h3>
+                <span className="section-label text-[10px] text-secondary">API Monitoring</span>
+                <h3 className="font-headline text-2xl text-primary">Endpoint Health Status</h3>
               </div>
               <div className="flex gap-2 bg-surface-container-low p-1 rounded-lg">
-                {['24H', '7D', '30D'].map((t, i) => (
+                {['1H', '24H', '7D'].map((t, i) => (
                   <button key={t} className={cn('px-4 py-1.5 text-xs font-bold rounded-md transition-colors', i === 0 ? 'bg-white shadow-sm text-on-surface' : 'text-on-surface-variant hover:text-primary')}>{t}</button>
                 ))}
               </div>
             </div>
-            <div className="flex-1 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl relative overflow-hidden min-h-[300px] flex items-center justify-center">
-              <div className="text-center space-y-4">
-                <span className="material-symbols-outlined text-8xl text-primary/20">public</span>
-                <p className="text-on-surface-variant text-sm">Global Revenue Map</p>
-              </div>
-              <div className="absolute bottom-6 left-6 flex flex-col gap-3">
-                {[
-                  { region: 'India', value: '₹4.2Cr', growth: '↑ 12%' },
-                  { region: 'APAC', value: '₹2.8Cr', growth: '↑ 8%' },
-                ].map(r => (
-                  <div key={r.region} className="glass-card p-4 rounded-xl border border-outline-variant/10 shadow-primary-sm">
-                    <p className="section-label text-[10px]">{r.region}</p>
-                    <p className="font-headline text-xl text-primary">{r.value} <span className="text-xs text-tertiary font-bold">{r.growth}</span></p>
+            <div className="flex-1 space-y-4">
+              {[
+                { endpoint: '/api/v1/auth/*', status: 'Healthy', uptime: '99.98%', avgResponse: '45ms', color: 'bg-tertiary' },
+                { endpoint: '/api/v1/products/*', status: 'Healthy', uptime: '99.95%', avgResponse: '120ms', color: 'bg-tertiary' },
+                { endpoint: '/api/v1/orders/*', status: 'Healthy', uptime: '99.92%', avgResponse: '180ms', color: 'bg-tertiary' },
+                { endpoint: '/api/v1/prescriptions/*', status: 'Degraded', uptime: '98.50%', avgResponse: '450ms', color: 'bg-amber-400' },
+                { endpoint: '/api/v1/payments/*', status: 'Healthy', uptime: '99.99%', avgResponse: '90ms', color: 'bg-tertiary' },
+              ].map(api => (
+                <div key={api.endpoint} className="p-4 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-3 h-3 rounded-full ${api.color}`} />
+                      <code className="text-sm font-mono text-on-surface">{api.endpoint}</code>
+                    </div>
+                    <span className={`badge text-[10px] ${api.status === 'Healthy' ? 'bg-tertiary-fixed text-tertiary' : 'bg-amber-100 text-amber-800'}`}>
+                      {api.status}
+                    </span>
                   </div>
-                ))}
-              </div>
+                  <div className="grid grid-cols-3 gap-4 text-xs">
+                    <div>
+                      <p className="text-outline">Uptime</p>
+                      <p className="font-bold text-on-surface">{api.uptime}</p>
+                    </div>
+                    <div>
+                      <p className="text-outline">Avg Response</p>
+                      <p className="font-bold text-on-surface">{api.avgResponse}</p>
+                    </div>
+                    <div>
+                      <p className="text-outline">Last Check</p>
+                      <p className="font-bold text-on-surface">2m ago</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
 
@@ -188,48 +216,56 @@ function SuperAdminContent() {
             </div>
           </section>
 
-          {/* User Growth */}
+          {/* Database Metrics */}
           <section className="col-span-4 card p-8 flex flex-col">
             <div className="flex items-center gap-3 mb-8">
-              <span className="material-symbols-outlined text-primary p-2 bg-primary/10 rounded-full">person_add</span>
-              <h3 className="font-headline text-2xl text-primary">User Growth</h3>
+              <span className="material-symbols-outlined text-primary p-2 bg-primary/10 rounded-full">storage</span>
+              <h3 className="font-headline text-2xl text-primary">Database</h3>
             </div>
-            <div className="flex-1 flex flex-col justify-center text-center">
-              <p className="font-headline text-4xl text-primary mb-1">12,84,592</p>
-              <p className="section-label text-[10px] mb-8">Active Global Users</p>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-surface-container rounded-xl">
-                  <p className="section-label text-[10px]">Monthly</p>
-                  <p className="font-headline text-xl text-primary">+12.4k</p>
+            <div className="flex-1 flex flex-col justify-center space-y-6">
+              {[
+                { label: 'Connections', value: '42/100', icon: 'link' },
+                { label: 'Query Time', value: '12ms', icon: 'speed' },
+                { label: 'Cache Hit', value: '94.2%', icon: 'memory' },
+              ].map(metric => (
+                <div key={metric.label} className="flex items-center justify-between p-4 bg-surface-container-low rounded-xl">
+                  <div className="flex items-center gap-3">
+                    <span className="material-symbols-outlined text-primary">{metric.icon}</span>
+                    <span className="text-sm text-on-surface-variant">{metric.label}</span>
+                  </div>
+                  <span className="font-headline text-xl text-primary">{metric.value}</span>
                 </div>
-                <div className="p-4 bg-surface-container rounded-xl">
-                  <p className="section-label text-[10px]">Retention</p>
-                  <p className="font-headline text-xl text-secondary">84%</p>
-                </div>
-              </div>
+              ))}
             </div>
           </section>
 
-          {/* Governance */}
+          {/* Admin Management */}
           <section className="col-span-12 card p-8 mt-4">
             <div className="flex flex-col md:flex-row justify-between items-center gap-8">
               <div className="max-w-md">
-                <span className="section-label text-[10px] text-primary-container mb-2 block">Administrative Control</span>
-                <h3 className="font-headline text-3xl text-primary mb-4">Governance &amp; Roles</h3>
-                <p className="text-sm text-on-surface-variant leading-relaxed">Modify permission clusters, audit access logs, and manage high-level administrator hierarchies.</p>
+                <span className="section-label text-[10px] text-primary-container mb-2 block">Admin User Management</span>
+                <h3 className="font-headline text-3xl text-primary mb-4">Create & Manage Admins</h3>
+                <p className="text-sm text-on-surface-variant leading-relaxed">As SuperAdmin, you can create Admin users who will manage the ArogyaNexa platform. You cannot access business data.</p>
               </div>
-              <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-6 w-full">
-                {[
-                  { icon: 'verified_user', title: 'Admin Matrix', sub: 'Manage Permissions', href: '/admin/users' },
-                  { icon: 'policy', title: 'Security Audit', sub: 'Review Access Logs', href: '/admin/users' },
-                  { icon: 'add_moderator', title: 'New Role', sub: 'Configure Policy', href: '/admin/users' },
-                ].map(item => (
-                  <Link key={item.title} href={item.href} className="group flex flex-col p-6 rounded-xl bg-surface-container-low hover:bg-white hover:shadow-primary-md transition-all border border-transparent hover:border-outline-variant/15 text-left">
-                    <span className="material-symbols-outlined mb-4 text-primary group-hover:scale-110 transition-transform text-3xl">{item.icon}</span>
-                    <span className="font-headline text-lg text-primary">{item.title}</span>
-                    <span className="section-label text-[10px] mt-1">{item.sub}</span>
-                  </Link>
-                ))}
+              <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+                <button 
+                  onClick={() => setShowCreateModal(true)}
+                  className="group flex flex-col p-6 rounded-xl bg-surface-container-low hover:bg-white hover:shadow-primary-md transition-all border border-transparent hover:border-outline-variant/15 text-left"
+                >
+                  <span className="material-symbols-outlined mb-4 text-primary group-hover:scale-110 transition-transform text-3xl">person_add</span>
+                  <span className="font-headline text-lg text-primary">Create Admin</span>
+                  <span className="section-label text-[10px] mt-1">Add new platform admin</span>
+                  <span className="mt-4 text-xs font-bold text-secondary">Create →</span>
+                </button>
+                <Link 
+                  href="/superadmin/admins"
+                  className="group flex flex-col p-6 rounded-xl bg-surface-container-low hover:bg-white hover:shadow-primary-md transition-all border border-transparent hover:border-outline-variant/15 text-left"
+                >
+                  <span className="material-symbols-outlined mb-4 text-primary group-hover:scale-110 transition-transform text-3xl">manage_accounts</span>
+                  <span className="font-headline text-lg text-primary">View Admins</span>
+                  <span className="section-label text-[10px] mt-1">List of all admin users</span>
+                  <span className="mt-4 text-xs font-bold text-secondary">View →</span>
+                </Link>
               </div>
             </div>
           </section>
@@ -254,6 +290,12 @@ function SuperAdminContent() {
           </div>
         </footer>
       </main>
+
+      <CreateAdminModal 
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+      />
+
       <ToastContainer />
     </div>
   );

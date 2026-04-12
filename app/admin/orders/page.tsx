@@ -25,7 +25,7 @@ const ORDER_STATUSES = ['', 'CREATED', 'PENDING_PRESCRIPTION', 'APPROVED', 'CONF
 
 export default function AdminOrdersPage() {
   return (
-    <ProtectedRoute requiredRole="ADMIN">
+    <ProtectedRoute requiredRole="ADMIN" blockSuperAdmin={true}>
       <AdminOrdersContent />
     </ProtectedRoute>
   );
@@ -69,13 +69,29 @@ function AdminOrdersContent() {
       <div className="ml-64 min-h-screen bg-surface">
         <header className="sticky top-0 z-30 flex items-center justify-between px-8 h-16 bg-white/80 backdrop-blur-md shadow-sm shadow-primary/5">
           <h1 className="font-headline text-2xl text-primary">Order Management</h1>
-          <select
-            value={statusFilter}
-            onChange={(e) => { setStatusFilter(e.target.value); setPage(0); }}
-            className="input-field py-2 text-sm w-auto"
-          >
-            {ORDER_STATUSES.map(s => <option key={s} value={s}>{s || 'All Statuses'}</option>)}
-          </select>
+          <div className="flex items-center gap-3">
+            <select
+              value={statusFilter}
+              onChange={(e) => { setStatusFilter(e.target.value); setPage(0); }}
+              className="input-field py-2 text-sm w-auto"
+            >
+              {ORDER_STATUSES.map(s => <option key={s} value={s}>{s || 'All Statuses'}</option>)}
+            </select>
+            <Link 
+              href="/admin/notifications"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Notifications"
+            >
+              <span className="material-symbols-outlined">notifications</span>
+            </Link>
+            <Link 
+              href="/admin/profile"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Profile"
+            >
+              <span className="material-symbols-outlined">account_circle</span>
+            </Link>
+          </div>
         </header>
 
         <div className="p-8 max-w-7xl mx-auto">

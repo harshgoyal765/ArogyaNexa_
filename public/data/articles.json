@@ -1,0 +1,56 @@
+[
+  {
+    "slug": "cortisol-management",
+    "category": "Pharmacology",
+    "title": "Advancements in Rapid Antigen Stability Testing",
+    "excerpt": "New protocols for maintaining protein integrity during transport in variable climate conditions.",
+    "date": "June 24, 2024",
+    "readTime": "8 Min Read",
+    "verified": true
+  },
+  {
+    "slug": "gut-brain-axis",
+    "category": "Bio-Tech",
+    "title": "The Gut-Brain Axis: Emerging Clinical Evidence",
+    "excerpt": "How microbiome diversity directly correlates with cognitive neurotransmitter synthesis and mood regulation.",
+    "date": "June 20, 2024",
+    "readTime": "15 Min Read",
+    "verified": true
+  },
+  {
+    "slug": "cortisol-nutrition",
+    "category": "Endocrinology",
+    "title": "Managing Cortisol Through Targeted Nutrition",
+    "excerpt": "Clinical studies show specific amino acid combinations can significantly dampen adrenal stress responses.",
+    "date": "June 18, 2024",
+    "readTime": "10 Min Read",
+    "verified": true
+  },
+  {
+    "slug": "cardiac-precision-medicine",
+    "category": "Cardiology",
+    "title": "The Future of Precision Medicine in Cardiac Care",
+    "excerpt": "Exploring how clinical genomics and personalized lifestyle data are reshaping cardiovascular health.",
+    "date": "June 15, 2024",
+    "readTime": "12 Min Read",
+    "verified": true
+  },
+  {
+    "slug": "sleep-hygiene",
+    "category": "Holistic",
+    "title": "The Circadian Blueprint: Optimizing Sleep Hygiene",
+    "excerpt": "How light temperature and thermal regulation determine your cellular recovery cycles.",
+    "date": "June 10, 2024",
+    "readTime": "9 Min Read",
+    "verified": true
+  },
+  {
+    "slug": "anti-inflammatory-nutrition",
+    "category": "Nutrition",
+    "title": "Anti-Inflammatory Kitchen Staples",
+    "excerpt": "The essential pantry audit for long-term metabolic health and lowered systemic inflammation.",
+    "date": "June 5, 2024",
+    "readTime": "7 Min Read",
+    "verified": true
+  }
+]

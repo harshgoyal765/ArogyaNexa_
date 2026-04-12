@@ -111,8 +111,20 @@ function DoctorPortalContent() {
             <input className="pl-10 pr-4 py-1.5 bg-surface-container-low border-none rounded-full text-sm w-56 focus:ring-1 focus:ring-primary/20 outline-none" placeholder="Search medical records..." />
           </div>
           <div className="flex items-center gap-3">
-            <button className="p-2 text-on-surface-variant hover:text-primary transition-colors"><span className="material-symbols-outlined">notifications</span></button>
-            <Link href="/profile" className="p-2 text-on-surface-variant hover:text-primary transition-colors"><span className="material-symbols-outlined">account_circle</span></Link>
+            <Link 
+              href="/doctor/notifications"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Notifications"
+            >
+              <span className="material-symbols-outlined">notifications</span>
+            </Link>
+            <Link 
+              href="/doctor/profile" 
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Profile"
+            >
+              <span className="material-symbols-outlined">account_circle</span>
+            </Link>
           </div>
         </header>
 
@@ -206,7 +218,7 @@ function DoctorPortalContent() {
                     { icon: 'add_notes', label: 'New Prescription', href: '/doctor/prescriptions' },
                     { icon: 'people', label: 'View Patients', href: '/doctor/patients' },
                     { icon: 'smart_toy', label: 'Ask AI Assistant', href: '/ai-assistant' },
-                    { icon: 'person', label: 'My Profile', href: '/profile' },
+                    { icon: 'person', label: 'My Profile', href: '/doctor/profile' },
                   ].map((a) => (
                     <Link key={a.label} href={a.href} className="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-container-low transition-colors group">
                       <span className="material-symbols-outlined text-primary text-xl">{a.icon}</span>

@@ -71,6 +71,22 @@ function OrdersContent() {
             <h1 className="font-headline text-2xl text-primary">Orders</h1>
             <p className="text-xs text-on-surface-variant">Dispensing queue &amp; prescription verification</p>
           </div>
+          <div className="flex items-center gap-3">
+            <Link 
+              href="/pharmacist/notifications"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Notifications"
+            >
+              <span className="material-symbols-outlined">notifications</span>
+            </Link>
+            <Link 
+              href="/pharmacist/profile"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Profile"
+            >
+              <span className="material-symbols-outlined">account_circle</span>
+            </Link>
+          </div>
         </header>
 
         <div className="p-8 max-w-7xl mx-auto space-y-6">

@@ -1,0 +1,63 @@
+{
+  "totalSalesDaily": 14280.00,
+  "activeOrders": 142,
+  "pendingPrescriptions": 28,
+  "stockAlerts": 12,
+  "stockAlertsCritical": 3,
+  "recentOrders": [
+    {
+      "id": "#WA-92834",
+      "customer": "Eleanor Fitzroy",
+      "note": "Prescription #PX-102",
+      "status": "Processing",
+      "statusColor": "bg-secondary-container/20 text-on-secondary-container",
+      "payment": "Insurance (Aetna)",
+      "total": 142.50
+    },
+    {
+      "id": "#WA-92833",
+      "customer": "Julian Vane",
+      "note": "OTC Health Bundle",
+      "status": "Shipped",
+      "statusColor": "bg-blue-100 text-blue-800",
+      "payment": "Visa •••• 4412",
+      "total": 89.00
+    },
+    {
+      "id": "#WA-92832",
+      "customer": "Sarah Miller",
+      "note": "Prescription #PX-098",
+      "status": "Delivered",
+      "statusColor": "bg-tertiary-fixed text-on-tertiary-fixed-variant",
+      "payment": "Apple Pay",
+      "total": 24.15
+    }
+  ],
+  "lowStock": [
+    {
+      "name": "Amoxicillin 500mg",
+      "remaining": 8,
+      "level": "critical"
+    },
+    {
+      "name": "Albuterol Inhaler",
+      "remaining": 14,
+      "level": "warning"
+    },
+    {
+      "name": "Sermorelin 9mg",
+      "remaining": 12,
+      "level": "critical"
+    },
+    {
+      "name": "Vitamin B12 Complex",
+      "remaining": 45,
+      "level": "critical"
+    },
+    {
+      "name": "Sterile Syringes G22",
+      "remaining": 82,
+      "level": "ok"
+    }
+  ]
+}

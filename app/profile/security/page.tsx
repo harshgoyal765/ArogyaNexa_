@@ -14,7 +14,7 @@ const SIDEBAR_LINKS = [
   { href: '/prescriptions', icon: 'medication', label: 'Prescriptions' },
   { href: '/orders', icon: 'autorenew', label: 'Orders' },
   { href: '/profile/security', icon: 'shield', label: 'Security', active: true },
-  { href: '/dashboard', icon: 'notifications_none', label: 'Notifications' },
+  { href: '/notifications', icon: 'notifications_none', label: 'Notifications' },
   { href: '/ai-assistant', icon: 'help_outline', label: 'Support' },
 ];
 

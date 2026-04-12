@@ -1,0 +1,38 @@
+{
+  "score": 82,
+  "activityLevel": "High",
+  "nutritionStatus": "Optimal",
+  "sleepQuality": "Improving",
+  "upcomingRefills": [
+    {
+      "name": "Lisinopril 10mg",
+      "daysRemaining": 5,
+      "autoShip": false
+    },
+    {
+      "name": "Vitamin D3 2000IU",
+      "daysRemaining": 12,
+      "autoShip": true
+    }
+  ],
+  "consultations": [
+    {
+      "status": "Completed",
+      "date": "Oct 24",
+      "title": "Quarterly Wellness Review",
+      "doctor": "Dr. Sarah Al-Farsi",
+      "icon": "check",
+      "color": "text-tertiary",
+      "bg": "bg-tertiary-fixed"
+    },
+    {
+      "status": "Upcoming",
+      "date": "Nov 12",
+      "title": "Nutrition Therapy Session",
+      "doctor": "Clinical Nutritionist: Mark Wey",
+      "icon": "calendar_today",
+      "color": "text-on-surface-variant",
+      "bg": "bg-surface-container-high"
+    }
+  ]
+}

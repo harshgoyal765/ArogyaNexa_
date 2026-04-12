@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import ProtectedRoute from '@/components/ui/ProtectedRoute';
 import PharmacistSidebar from '@/components/layout/PharmacistSidebar';
 import { ToastContainer } from '@/components/ui/Toast';
@@ -79,10 +80,25 @@ function AnalyticsContent() {
       <div className="ml-64 flex-1 min-h-screen">
         <header className="sticky top-0 z-30 flex items-center justify-between px-8 h-16 bg-white/80 backdrop-blur-md shadow-sm shadow-primary/5">
           <div>
-            <h1 className="font-headline text-2xl text-primary">Analytics</h1>
-            <p className="text-xs text-on-surface-variant">Dispensing performance &amp; clinical metrics</p>
+            <h1 className="font-headline text-2xl text-primary">Analytics Dashboard</h1>
+            <p className="text-xs text-on-surface-variant">Clinical performance metrics</p>
           </div>
-          <span className="badge bg-surface-container text-on-surface-variant text-xs">Demo Data</span>
+          <div className="flex items-center gap-3">
+            <Link 
+              href="/pharmacist/notifications"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Notifications"
+            >
+              <span className="material-symbols-outlined">notifications</span>
+            </Link>
+            <Link 
+              href="/pharmacist/profile"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Profile"
+            >
+              <span className="material-symbols-outlined">account_circle</span>
+            </Link>
+          </div>
         </header>
 
         <div className="p-8 max-w-7xl mx-auto space-y-8">

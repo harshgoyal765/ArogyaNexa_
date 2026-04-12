@@ -1,0 +1,49 @@
+{
+  "uuid": "usr-content-001",
+  "firstName": "Elena",
+  "lastName": "Sterling",
+  "email": "elena.sterling@arogyanexa.com",
+  "phone": "+919876543221",
+  "role": "CONTENT_EDITOR",
+  "designation": "Senior Content Editor",
+  "department": "Content & Marketing",
+  "contentDomains": [
+    "Wellness & Nutrition",
+    "Pharmacology",
+    "Medical Research",
+    "Patient Education"
+  ],
+  "assignedSections": [
+    "Wellness Blog",
+    "Product Descriptions",
+    "Health Articles",
+    "Newsletter"
+  ],
+  "education": [
+    {
+      "degree": "PharmD",
+      "institution": "University of Mumbai",
+      "year": "2019"
+    },
+    {
+      "degree": "Certificate in Medical Writing",
+      "institution": "AMWA",
+      "year": "2020"
+    }
+  ],
+  "articlesPublished": 156,
+  "articlesInDraft": 8,
+  "averageReadTime": "6 minutes",
+  "totalReaders": 45000,
+  "languages": ["English", "Hindi"],
+  "expertise": [
+    "Medical Writing",
+    "SEO Optimization",
+    "Content Strategy",
+    "Health Communication"
+  ],
+  "bio": "PharmD and certified medical writer specializing in patient education and wellness content.",
+  "joinedDate": "2024-04-10T10:00:00Z",
+  "lastActivity": "2024-10-23T15:00:00Z",
+  "workingHours": "10:00 AM - 6:00 PM IST"
+}

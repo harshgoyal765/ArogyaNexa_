@@ -53,6 +53,15 @@ export default function LoginPage() {
     <div className="min-h-screen bg-surface flex">
       {/* Left panel */}
       <div className="hidden lg:flex lg:w-1/2 bg-surface-container-low relative overflow-hidden items-center justify-center p-16 flex-col justify-between">
+        {/* Homepage Redirect Button */}
+        <Link 
+          href="/"
+          className="absolute top-6 left-6 flex items-center gap-2 px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-lg transition-all group z-20"
+        >
+          <span className="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform">arrow_back</span>
+          Back to Home
+        </Link>
+
         <div className="relative z-10 w-full">
           <div className="text-2xl font-headline italic text-primary mb-12 tracking-tight">ArogyaNexa</div>
           <h1 className="font-headline text-6xl lg:text-7xl text-on-surface leading-[1.1] max-w-xl">

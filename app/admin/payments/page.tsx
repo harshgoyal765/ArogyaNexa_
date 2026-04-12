@@ -41,8 +41,22 @@ function AdminPaymentsContent() {
     setLoading(true);
     paymentsService.list({ page: 0, size: 20 })
       .then(({ data: res }) => setData(res.data))
-      .catch(() => {
-        setData({ content: [], page: 0, size: 20, totalElements: 0, totalPages: 0, last: true });
+      .catch(async () => {
+        // Fallback to static data
+        try {
+          const response = await fetch('/data/payments.json');
+          const payments = await response.json();
+          setData({
+            content: payments,
+            page: 0,
+            size: 20,
+            totalElements: payments.length,
+            totalPages: Math.ceil(payments.length / 20),
+            last: true,
+          });
+        } catch {
+          setData({ content: [], page: 0, size: 20, totalElements: 0, totalPages: 0, last: true });
+        }
       })
       .finally(() => setLoading(false));
   }, []);

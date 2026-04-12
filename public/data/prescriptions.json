@@ -1,0 +1,24 @@
+[
+  {
+    "id": "RX-9921",
+    "status": "PENDING",
+    "fileUrl": "",
+    "notes": "Dermatology Compound A-4",
+    "createdAt": "2024-10-24T08:00:00Z"
+  },
+  {
+    "id": "RX-8840",
+    "status": "APPROVED",
+    "fileUrl": "",
+    "notes": "Chronic Pain Management - Level 2",
+    "createdAt": "2024-10-22T10:00:00Z"
+  },
+  {
+    "id": "RX-7712",
+    "status": "REJECTED",
+    "fileUrl": "",
+    "notes": "Standard Health Screening",
+    "createdAt": "2024-10-20T14:00:00Z",
+    "pharmacistNote": "Clinic stamp blurred on the bottom right corner. We are unable to verify authenticity. Please resubmit with a clearer image."
+  }
+]

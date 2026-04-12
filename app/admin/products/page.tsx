@@ -1,10 +1,12 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Plus, Edit, Trash2, Search } from 'lucide-react';
 import AdminSidebar from '@/components/layout/AdminSidebar';
 import ProtectedRoute from '@/components/ui/ProtectedRoute';
 import Pagination from '@/components/ui/Pagination';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import AddProductModal from '@/components/admin/AddProductModal';
 import { ToastContainer, showToast } from '@/components/ui/Toast';
 import { productsService } from '@/lib/services/products.service';
 import { formatCurrency } from '@/lib/utils';
@@ -13,7 +15,7 @@ import type { PagedResponse } from '@/types/api';
 
 export default function AdminProductsPage() {
   return (
-    <ProtectedRoute requiredRole="ADMIN">
+    <ProtectedRoute requiredRole="ADMIN" blockSuperAdmin={true}>
       <AdminProductsContent />
     </ProtectedRoute>
   );
@@ -33,6 +35,7 @@ function AdminProductsContent() {
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
   const [deleting, setDeleting] = useState<number | null>(null);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const fetchProducts = () => {
     setLoading(true);
@@ -82,7 +85,26 @@ function AdminProductsContent() {
                 onChange={(e) => { setSearch(e.target.value); setPage(0); }}
                 className="input-field pl-9 py-2 text-sm w-64" />
             </div>
-            <button className="btn-primary text-sm"><Plus size={18} /> Add New Product</button>
+            <Link 
+              href="/admin/notifications"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center"
+              aria-label="Notifications"
+            >
+              <span className="material-symbols-outlined">notifications</span>
+            </Link>
+            <Link 
+              href="/admin/profile"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center"
+              aria-label="Profile"
+            >
+              <span className="material-symbols-outlined">account_circle</span>
+            </Link>
+            <button 
+              onClick={() => setShowAddModal(true)}
+              className="btn-primary text-sm"
+            >
+              <Plus size={18} /> Add New Product
+            </button>
           </div>
         </header>
 
@@ -192,6 +214,15 @@ function AdminProductsContent() {
           )}
         </div>
       </div>
+
+      <AddProductModal 
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onSuccess={() => {
+          fetchProducts();
+        }}
+      />
+
       <ToastContainer />
     </>
   );

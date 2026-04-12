@@ -82,6 +82,15 @@ export default function RegisterPage() {
     <main className="min-h-screen flex flex-col md:flex-row items-stretch overflow-hidden">
       {/* Left panel */}
       <section className="hidden md:flex md:w-5/12 lg:w-4/12 bg-primary relative p-12 flex-col justify-between text-on-primary">
+        {/* Homepage Redirect Button */}
+        <Link 
+          href="/"
+          className="absolute top-6 left-6 flex items-center gap-2 px-4 py-2 text-sm font-medium text-on-primary/80 hover:text-on-primary hover:bg-on-primary/10 rounded-lg transition-all group z-20"
+        >
+          <span className="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform">arrow_back</span>
+          Back to Home
+        </Link>
+
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-16">
             <span className="text-3xl font-headline italic tracking-tight">ArogyaNexa</span>
@@ -116,7 +125,7 @@ export default function RegisterPage() {
       </section>
 
       {/* Right panel */}
-      <section className="flex-1 bg-surface-container-low flex items-center justify-center p-6 md:p-12 lg:p-24 overflow-y-auto">
+      <section className="flex-1 bg-surface-container-low flex items-center justify-center p-6 md:p-12 lg:p-24 overflow-y-auto relative">
         <div className="w-full max-w-lg">
           {/* Mobile Branding */}
           <div className="md:hidden mb-8 text-center">

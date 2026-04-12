@@ -2,11 +2,12 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { ShoppingCart, User, Search, Menu, X, LogOut, Package, Heart } from 'lucide-react';
+import { ShoppingCart, User, Search, Menu, X, LogOut, Package, Heart, Bell } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useAppDispatch, useAppSelector } from '@/hooks/useAppDispatch';
 import { clearAuth } from '@/store/authSlice';
 import { authApi } from '@/lib/api/auth';
+import { getUnreadNotificationCount } from '@/lib/dataLoader';
 import { cn } from '@/lib/utils';
 
 export default function Navbar() {
@@ -14,6 +15,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -84,27 +86,27 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              {isPharmacist && (
+              {isPharmacist && !isSuperAdmin && (
                 <Link href="/pharmacist/prescriptions" className="text-sm font-medium text-secondary hover:text-primary transition-colors">
                   Pharmacist
                 </Link>
               )}
-              {isDoctor && (
+              {isDoctor && !isSuperAdmin && (
                 <Link href="/doctor" className="text-sm font-medium text-secondary hover:text-primary transition-colors">
                   Doctor Portal
                 </Link>
               )}
-              {isAdmin && (
+              {isAdmin && !isSuperAdmin && (
                 <Link href="/admin/dashboard" className="text-sm font-medium text-secondary hover:text-primary transition-colors">
                   Admin
                 </Link>
               )}
               {isSuperAdmin && (
                 <Link href="/superadmin" className="text-sm font-medium text-secondary hover:text-primary transition-colors">
-                  Super Admin
+                  System Monitor
                 </Link>
               )}
-              {isContentEditor && (
+              {isContentEditor && !isSuperAdmin && (
                 <Link href="/admin/content" className="text-sm font-medium text-secondary hover:text-primary transition-colors">
                   Content
                 </Link>
@@ -122,18 +124,30 @@ export default function Navbar() {
               </button>
 
               {isAuthenticated && (
-                <Link
-                  href="/cart"
-                  className="relative p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-full transition-all"
-                  aria-label="Cart"
-                >
-                  <ShoppingCart size={20} />
-                  {cartCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 w-5 h-5 clinical-gradient text-white text-xs rounded-full flex items-center justify-center font-bold">
-                      {cartCount > 9 ? '9+' : cartCount}
-                    </span>
-                  )}
-                </Link>
+                <>
+                  <Link
+                    href="/notifications"
+                    className="relative p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-full transition-all"
+                    aria-label="Notifications"
+                  >
+                    <span className="material-symbols-outlined text-xl">notifications</span>
+                    {/* Notification badge - can be enhanced with real unread count */}
+                    <span className="absolute top-1 right-1 w-2 h-2 bg-error rounded-full border-2 border-white" />
+                  </Link>
+
+                  <Link
+                    href="/cart"
+                    className="relative p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-full transition-all"
+                    aria-label="Cart"
+                  >
+                    <ShoppingCart size={20} />
+                    {cartCount > 0 && (
+                      <span className="absolute -top-0.5 -right-0.5 w-5 h-5 clinical-gradient text-white text-xs rounded-full flex items-center justify-center font-bold">
+                        {cartCount > 9 ? '9+' : cartCount}
+                      </span>
+                    )}
+                  </Link>
+                </>
               )}
 
               {isAuthenticated ? (
@@ -149,6 +163,9 @@ export default function Navbar() {
                     <div className="p-2 space-y-1">
                       <Link href="/profile" className="flex items-center gap-2 px-3 py-2 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-lg transition-colors">
                         <User size={16} /> Profile
+                      </Link>
+                      <Link href="/notifications" className="flex items-center gap-2 px-3 py-2 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-lg transition-colors">
+                        <span className="material-symbols-outlined text-base">notifications</span> Notifications
                       </Link>
                       <Link href="/orders" className="flex items-center gap-2 px-3 py-2 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-lg transition-colors">
                         <Package size={16} /> Orders

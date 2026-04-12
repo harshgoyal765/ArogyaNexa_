@@ -1,0 +1,40 @@
+{
+  "uuid": "usr-doctor-001",
+  "firstName": "Sarah",
+  "lastName": "Al-Farsi",
+  "email": "sarah.alfarsi@arogyanexa.com",
+  "phone": "+919876543220",
+  "role": "DOCTOR",
+  "specialization": "Internal Medicine",
+  "licenseNumber": "MCI-2018-45678",
+  "experience": "8 years",
+  "education": [
+    {
+      "degree": "MBBS",
+      "institution": "All India Institute of Medical Sciences",
+      "year": "2015"
+    },
+    {
+      "degree": "MD (Internal Medicine)",
+      "institution": "King Edward Memorial Hospital",
+      "year": "2018"
+    }
+  ],
+  "availability": {
+    "monday": "9:00 AM - 5:00 PM",
+    "tuesday": "9:00 AM - 5:00 PM",
+    "wednesday": "9:00 AM - 5:00 PM",
+    "thursday": "9:00 AM - 5:00 PM",
+    "friday": "9:00 AM - 3:00 PM",
+    "saturday": "Closed",
+    "sunday": "Closed"
+  },
+  "consultationFee": 1500,
+  "languages": ["English", "Hindi", "Arabic"],
+  "patientsServed": 1250,
+  "prescriptionsIssued": 3420,
+  "averageRating": 4.8,
+  "bio": "Board-certified internal medicine physician with expertise in chronic disease management and preventive care.",
+  "joinedDate": "2024-02-01T10:00:00Z",
+  "lastActivity": "2024-10-24T08:30:00Z"
+}

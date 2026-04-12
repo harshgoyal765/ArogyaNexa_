@@ -33,19 +33,24 @@ export default function LoadingSpinner({ size = 'md', className, fullPage }: Loa
   return spinner;
 }
 
-export function ProductCardSkeleton() {
-  return (
-    <div className="card overflow-hidden animate-pulse">
-      <div className="aspect-[4/3] bg-surface-container-high" />
-      <div className="p-5 space-y-3">
-        <div className="h-3 bg-surface-container-high rounded w-1/3" />
-        <div className="h-5 bg-surface-container-high rounded w-3/4" />
-        <div className="h-3 bg-surface-container-high rounded w-1/2" />
-        <div className="flex justify-between items-center pt-3 border-t border-surface-container-high">
-          <div className="h-6 bg-surface-container-high rounded w-1/4" />
-          <div className="w-9 h-9 bg-surface-container-high rounded-full" />
-        </div>
-      </div>
-    </div>
-  );
-}
+// Re-export all skeletons from Skeletons.tsx for backward compatibility
+export {
+  ProductCardSkeleton,
+  DashboardCardSkeleton,
+  MetricCardSkeleton,
+  TableSkeleton,
+  TableRowSkeleton,
+  ListSkeleton,
+  ListItemSkeleton,
+  ProfileSkeleton,
+  ProfileCardSkeleton,
+  ProfileHeaderSkeleton,
+  NotificationsSkeleton,
+  NotificationItemSkeleton,
+  OrderCardSkeleton,
+  WellnessScoreSkeleton,
+  ChartSkeleton,
+  ArticleCardSkeleton,
+  PrescriptionCardSkeleton,
+  FullPageSkeleton,
+} from './Skeletons';

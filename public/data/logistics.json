@@ -1,0 +1,26 @@
+[
+  {
+    "trackingId": "#WS-9902-11X",
+    "destination": "Oslo, Norway",
+    "facility": "Haukeland University Hospital",
+    "status": "STALLED",
+    "issue": "Customs clearance held: Documentation required",
+    "action": "Resolve Docs"
+  },
+  {
+    "trackingId": "#WS-8821-44B",
+    "destination": "Toronto, Canada",
+    "facility": "Bay Street Pharmacy",
+    "status": "TEMP BREACH",
+    "issue": "Cold chain deviation detected (+2°C over limit)",
+    "action": "Re-route / Recall"
+  },
+  {
+    "trackingId": "#WS-7710-92Z",
+    "destination": "Singapore",
+    "facility": "Changi Medical Park",
+    "status": "LOST TRACE",
+    "issue": "Last ping: 14h ago at HK Transfer Hub",
+    "action": "Initiate Inquiry"
+  }
+]

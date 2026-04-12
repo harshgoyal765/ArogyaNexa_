@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Eye } from 'lucide-react';
 import ProtectedRoute from '@/components/ui/ProtectedRoute';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
@@ -93,9 +94,20 @@ function PharmacistDashboard() {
               <p className="text-[10px] uppercase tracking-widest text-outline font-bold">Queue Status</p>
               <p className="text-lg font-bold text-primary">{stats[0].value} Pending Reviews</p>
             </div>
-            <button className="p-2 text-on-surface-variant hover:text-primary transition-colors">
+            <Link 
+              href="/pharmacist/notifications"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Notifications"
+            >
               <span className="material-symbols-outlined">notifications</span>
-            </button>
+            </Link>
+            <Link 
+              href="/pharmacist/profile"
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors"
+              aria-label="Profile"
+            >
+              <span className="material-symbols-outlined">account_circle</span>
+            </Link>
           </div>
         </header>
 

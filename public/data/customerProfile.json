@@ -1,0 +1,55 @@
+{
+  "uuid": "usr-001",
+  "firstName": "Julian",
+  "lastName": "Vane",
+  "email": "julian.vane@example.com",
+  "phone": "+919876543210",
+  "role": "CUSTOMER",
+  "age": 42,
+  "gender": "Male",
+  "dateOfBirth": "1982-05-15",
+  "bloodGroup": "O+",
+  "address": {
+    "street": "123 Marine Drive",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "pincode": "400020",
+    "country": "India"
+  },
+  "emergencyContact": {
+    "name": "Emma Vane",
+    "relationship": "Spouse",
+    "phone": "+919876543299"
+  },
+  "medicalHistory": {
+    "allergies": ["Penicillin", "Peanuts"],
+    "chronicConditions": ["Hypertension", "Type 2 Diabetes"],
+    "currentMedications": [
+      "Lisinopril 10mg - Once daily",
+      "Metformin 500mg - Twice daily",
+      "Vitamin D3 2000IU - Once daily"
+    ],
+    "pastSurgeries": [
+      {
+        "procedure": "Appendectomy",
+        "date": "2015-08-20"
+      }
+    ]
+  },
+  "healthMetrics": {
+    "height": "175 cm",
+    "weight": "78 kg",
+    "bmi": 25.5,
+    "lastCheckup": "2024-09-15"
+  },
+  "insurance": {
+    "provider": "Star Health Insurance",
+    "policyNumber": "SH-2024-789456",
+    "validUntil": "2025-12-31"
+  },
+  "prescriptionsActive": 4,
+  "ordersPlaced": 12,
+  "memberSince": "2024-01-15T10:00:00Z",
+  "lastVisit": "2024-10-24T09:00:00Z",
+  "loyaltyPoints": 450
+}
