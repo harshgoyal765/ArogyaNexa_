@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/shivam-codespace/merge-erp-configuration-properties.git
+          username: ${GIT_USERNAME:shivam-codespace}
+          password: ${GIT_TOKEN:}
+          default-label: main
+          clone-on-start: true
+          timeout: 10
+
+management:
+  security:
+    enabled: false
+      

@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+
+        - id: auth-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/auth/**
+
+        - id: record-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/records/**
+
+        - id: analytics-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/dashboard/**
+
+        - id: notification-service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/notifications/**
