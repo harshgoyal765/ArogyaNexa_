@@ -6,6 +6,7 @@ interface SkeletonProps {
   width?: string | number;
   height?: string | number;
   animation?: 'pulse' | 'wave' | 'none';
+  style?: React.CSSProperties;
 }
 
 export function Skeleton({
@@ -14,6 +15,7 @@ export function Skeleton({
   width,
   height,
   animation = 'pulse',
+  style: externalStyle,
 }: SkeletonProps) {
   const baseClasses = 'bg-surface-container-high';
   
@@ -30,7 +32,7 @@ export function Skeleton({
     none: '',
   };
 
-  const style: React.CSSProperties = {};
+  const style: React.CSSProperties = { ...externalStyle };
   if (width) style.width = typeof width === 'number' ? `${width}px` : width;
   if (height) style.height = typeof height === 'number' ? `${height}px` : height;
 
